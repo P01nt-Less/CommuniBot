@@ -150,7 +150,6 @@ async def communibot(ctx):
 @bot.command(pass_context=True, aliases=['creator'])
 async def credit(ctx):
     member = ctx.message.author
-    info = discord.AppInfo
 
     join = discord.Embed(description= '',title = 'Credit', colour = 0xFFFF);
     join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.", inline=True);
