@@ -147,24 +147,27 @@ async def communibot(ctx):
 	if ctx.invoked_subcommand is None:
 		embed=discord.Embed(description='CommuniBot commands\n\n\n-credit\nSee who made the bot.\n\n-invite\nGet the bot\'s invite link.\n\n-support\nGet the invite for CommuniBot\'s server.\n\n-uptime\nGet the bot\'s uptime statistics.', color=0x2874A6)
 		await bot.say(embed=embed)
-@bot.command(pass_context=True, aliases=['creator'])
-async def credit(ctx):
+@bot.command(pass_context=True, aliases=['botinfo'])
+async def info(ctx):
     member = ctx.message.author
+    second = time.time() - start_time
+    minute, second = divmod(second, 60)
+    hour, minute = divmod(minute, 60)
+    day, hour = divmod(hour, 24)
+    week, day = divmod(day, 7)
 
-    join = discord.Embed(description= '',title = 'Credit', colour = 0xFFFF);
+    join = discord.Embed(description= '',title = 'Information about CommuniBot', colour = 0xFFFF);
+    join.add_field(name = '__Information__', value = f"This bot was made in discord.py and was created by <@276043503514025984> (Pointless). It is for a bot that has moderation, fun commands, memes and more. It aims to make communities get less bots in total, so it doesn't look like there's too much bots in the Member list.", inline=True);
     join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.", inline=True);
     join.add_field(name = '__Helped__', value = f"<@338600456383234058> - Created -say, -poll and -embed command.", inline=True)
-
+    join.add_field(name = '__Bot Invite Link__', value = f"Invite link for the bot: https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591", inline=True)
+    join.add_field(name = '__Support Server Invite Link__', value = f"Invite link for the support server: https://discord.gg/Fz2pKVE", inline=True)
+    join.add_field(name = '__Discord Bots Link__', value = f"Link for Discord Bots: https://discordbots.org/bot/406890237604790302", inline=True)
+    join.add_field(name = '__Github Link__', value = f"Link for Github page: https://github.com/P01nt-Less/CommuniBot", inline=True)
+    join.add_field(name = '__Uptime Status__', value = f"I've been online for %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s)!" % (week, day, hour, minute, second), inline=True)
     return await bot.say(embed = join);
     await bot.say(embed=embed)
-@bot.command(pass_context=True)
-async def invite(ctx):
-	embed=discord.Embed(description='Bot link:\nhttps://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591', color=0x2874A6)
-	await bot.say(embed=embed)
-@bot.command(pass_context=True)
-async def support(ctx):
-	embed=discord.Embed(description='Discord server invite:\nhttps://discord.gg/Fz2pKVE', color=0x2874A6)
-	await bot.say(embed=embed)
+
 @bot.command(pass_context=True)
 async def uptime():
     second = time.time() - start_time
