@@ -58,7 +58,7 @@ async def prefixes(ctx):
 #help
 @bot.command(pass_context=True)
 async def help(ctx):
-	embed=discord.Embed(description='Help\nPrefixes: -prefixes\n\n\n-ping \nShows a list of ping commands.\n\n-communibot + \nShows a list of commands relating to CommuniBot\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-memes +\nShows a list of meme commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
+	embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-memes +\nShows a list of meme commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
 	await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
@@ -141,12 +141,7 @@ async def roll(ctx, number: int=100):
         await bot.say(f"{ctx.message.author.mention} Please insert a number higher than one.")
 
 
-#communibot
-@bot.group(pass_context=True)
-async def communibot(ctx):
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='CommuniBot commands\n\n\n-credit\nSee who made the bot.\n\n-invite\nGet the bot\'s invite link.\n\n-support\nGet the invite for CommuniBot\'s server.\n\n-uptime\nGet the bot\'s uptime statistics.', color=0x2874A6)
-		await bot.say(embed=embed)
+#info
 @bot.command(pass_context=True, aliases=['botinfo'])
 async def info(ctx):
     member = ctx.message.author
