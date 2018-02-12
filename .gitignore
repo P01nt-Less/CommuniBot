@@ -98,4 +98,6 @@ ENV/
 # mypy
 .mypy_cache/
 
+#my things
 config.ini
+.gitattributes
