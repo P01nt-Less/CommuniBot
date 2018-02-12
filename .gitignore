@@ -101,3 +101,4 @@ ENV/
 #my things
 config.ini
 .gitattributes
+.gitignore
