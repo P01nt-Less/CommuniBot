@@ -153,7 +153,7 @@ async def credit(ctx):
     info = discord.AppInfo
 
     join = discord.Embed(description= '',title = 'Credit', colour = 0xFFFF);
-    join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the whole bot and all commands.", inline=True);
+    join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.", inline=True);
     join.add_field(name = '__Helped__', value = f"<@338600456383234058> - Created -say, -poll and -embed command.", inline=True)
 
     return await bot.say(embed = join);
