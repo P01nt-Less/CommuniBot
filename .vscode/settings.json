@@ -4,7 +4,7 @@
     "git.autoRepositoryDetection": true,
     "git.autofetch": true,
     "git.autorefresh": true,
-    "files.autoSave": "on",
+    "files.autoSave": "onWindowChange",
     "workbench.iconTheme": "material-icon-theme",
     "team.showWelcomeMessage": false,
     "explorer.confirmDragAndDrop": false,
