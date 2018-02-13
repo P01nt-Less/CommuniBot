@@ -73,10 +73,11 @@ Heil someone!
 SHOWS PICTUREZ OV LOLCATS!!
 
 ###### -saltbae
-Shows pictures of the salt bae meme.
+*Sprinkling salt on list of saltbae memes*
 
 ###### -loldog
 SHOWS PICTUREZ OV LOLDOGS!!
+
 -moderation +
 -----
 
