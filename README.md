@@ -159,11 +159,13 @@ Create a poll with the thumbs up, shrug and thumbs down reaction.
 -embed
 Embed a message so CommuniBot can say what you wanted.
 
-Creators
+Credit
 =====
-Pointless#1278 - Created the the bot and all the commands, except for the ones who created some.
-Helped
-Vilgot#7447 - Created -say, -poll and -embed command.
+###### Pointless#1278
+Created the the bot and all the commands, except for the ones who created some.
+
+###### Vilgot#7447
+Created -say, -poll and -embed command.
 
 Links
 =====
