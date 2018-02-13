@@ -36,8 +36,6 @@ async def on_ready():
 	bot.start_time = time.time()
 	print("Online.")
 	await bot.change_presence(game=discord.Game(name='on {} servers | -help.'.format(len(bot.servers))), status=discord.Status.online)
-#owner commands
-
 
 #commands
 #ping
