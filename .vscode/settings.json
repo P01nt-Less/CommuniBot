@@ -2,7 +2,7 @@
     "gitHistory.hideCommitViewExplorer": "true",
     "git.ignoreLimitWarning": true,
     "git.autoRepositoryDetection": true,
-    "git.autofetch": true
+    "git.autofetch": true,
     "git.autorefresh": true,
     "files.autoSave": "on",
     "workbench.iconTheme": "material-icon-theme",
