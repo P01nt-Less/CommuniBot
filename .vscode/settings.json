@@ -1,5 +1,5 @@
 {
-    "gitHistory.hideCommitViewExplorer": "true",
+    "gitHistory.hideCommitViewExplorer": true,
     "git.ignoreLimitWarning": true,
     "git.autoRepositoryDetection": true,
     "git.autofetch": true,
