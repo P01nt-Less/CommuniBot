@@ -25,6 +25,7 @@ Randomizes between lots of Chuck Norris jokes/facts.
 
 -dadjoke
 Randomizes between lots of really not funny bad Dad jokes!
+
 -actions +
 -----
 -punch
@@ -135,6 +136,7 @@ Make CommuniBot choose over three or more things.
 
 -roll
 Roll any number above one.
+
 -server +
 -----
 -serverinfo
@@ -145,6 +147,7 @@ Lists the banned people on the server.
 
 -userinfo
 Check info about you or other users
+
 -utilities +
 -----
 -avatar
