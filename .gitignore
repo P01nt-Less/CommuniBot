@@ -102,3 +102,5 @@ ENV/
 config.ini
 .gitattributes
 .gitignore
+.vscode
+.vscode/settings.json
