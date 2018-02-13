@@ -9,20 +9,22 @@ This bot was made in discord.py and was created by  Pointless#1278. It is for a 
 
 Commands
 =====
--prefixes - Shows the prefixes that CommuniBot has.
--ping - Shows the amount of milliseconds taken to respond.
--info - Shows information about CommuniBot!
--uptime - Shows the uptime status of CommuniBot!
+###### -prefixes
+Shows the prefixes that CommuniBot has.
+
+######-ping - Shows the amount of milliseconds taken to respond.
+######-info - Shows information about CommuniBot!
+######-uptime - Shows the uptime status of CommuniBot!
 
 -jokes +
 -----
--insovietrussia
+######-insovietrussia
 This command randomizes between lots of "In Soviet Russia" jokes.
 
--chucknorris
+######-chucknorris
 Randomizes between lots of Chuck Norris jokes/facts.
 
--dadjoke
+######-dadjoke
 Randomizes between lots of really not funny bad Dad jokes!
 
 -actions +
@@ -86,7 +88,6 @@ Kick someone.
 Needs permission kick_members.
 
 -ban
--ban <mentioned username>
 Ban someone.
 Needs ban_members permission.
 
