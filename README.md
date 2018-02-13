@@ -163,8 +163,8 @@ Created -say, -poll and -embed command.
 Links
 =====
 
-Invite link for the bot: <https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591>
-Invite link for the support server: <https://discord.gg/Fz2pKVE>
-Link for Discord Bots: <https://discordbots.org/bot/406890237604790302>
-Link for Github page: <https://github.com/P01nt-Less/CommuniBot>
-Link for Reddit page: <https://www.reddit.com/r/The_Community/>
+[Invite link for the bot](https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591)
+[Invite link for the support server](https://discord.gg/Fz2pKVE)
+[Link for Discord Bots List](https://discordbots.org/bot/406890237604790302)
+[Link for Github page](https://github.com/P01nt-Less/CommuniBot)
+[Link for Reddit page](https://www.reddit.com/r/The_Community/)
