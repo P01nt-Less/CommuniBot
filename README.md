@@ -9,9 +9,7 @@ This bot was made in discord.py and was created by  Pointless#1278. It is for a 
 
 Commands
 =====
-###### -prefixes
-Shows the prefixes that CommuniBot has.
-
+###### -prefixes -Shows the prefixes that CommuniBot has.
 ###### -ping - Shows the amount of milliseconds taken to respond.
 ###### -info - Shows information about CommuniBot!
 ###### -uptime - Shows the uptime status of CommuniBot!
