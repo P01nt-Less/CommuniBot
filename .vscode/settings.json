@@ -1,0 +1,13 @@
+{
+    "gitHistory.hideCommitViewExplorer": "true",
+    "git.ignoreLimitWarning": true,
+    "git.autoRepositoryDetection": true,
+    "git.autofetch": true
+    "git.autorefresh": true,
+    "files.autoSave": "on",
+    "workbench.iconTheme": "material-icon-theme",
+    "team.showWelcomeMessage": false,
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+}
