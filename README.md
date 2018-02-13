@@ -69,10 +69,10 @@ Heil someone!
 -memes +
 -----
 
-####### -lolcat
+###### -lolcat
 SHOWS PICTUREZ OV LOLCATS!!
 
-####### -saltbae
+###### -saltbae
 Shows pictures of the salt bae meme.
 
 ###### -loldog
