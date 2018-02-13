@@ -143,7 +143,7 @@ Check info about you or other users
 
 -utilities +
 -----
-####### -avatar
+###### -avatar
 Get the avatar link of a user.
 
 ###### -poll
