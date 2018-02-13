@@ -12,151 +12,146 @@ Commands
 ###### -prefixes
 Shows the prefixes that CommuniBot has.
 
-######-ping - Shows the amount of milliseconds taken to respond.
-######-info - Shows information about CommuniBot!
-######-uptime - Shows the uptime status of CommuniBot!
+###### -ping - Shows the amount of milliseconds taken to respond.
+###### -info - Shows information about CommuniBot!
+###### -uptime - Shows the uptime status of CommuniBot!
 
 -jokes +
 -----
-######-insovietrussia
+###### -insovietrussia
 This command randomizes between lots of "In Soviet Russia" jokes.
 
-######-chucknorris
+###### -chucknorris
 Randomizes between lots of Chuck Norris jokes/facts.
 
-######-dadjoke
+###### -dadjoke
 Randomizes between lots of really not funny bad Dad jokes!
 
 -actions +
 -----
--punch
+###### -punch
 Punches someone you'd like to do that to.
 
--legkick
+###### -legkick
 Kicks anyone you like.
 
--hug
+###### -hug
 Hugs anyone you like.
 
--kiss
+###### -kiss
 Kiss anyone you like.
 
--uppercut
+###### -uppercut
 Uppercut anybody you like.
 
--wave
+###### -wave
 Wave at anyone you'd like to.
 
--smile
+###### -smile
 Just smile.
 
--frown
+###### -frown
 Frown. :(
 
--slap
+###### -slap
 Slap anyone you like.
 
--stab
+###### -stab
 Stab people! Muehehehe!
 
--murder
+###### -murder
 Murder someone...
 
--shoot
+###### -shoot
 Shoot a person! Dun dun dunn!!
 
--heil
+###### -heil
 Heil someone!
 
 -memes +
 -----
 
--lolcat
+####### -lolcat
 SHOWS PICTUREZ OV LOLCATS!!
 
--saltbae
+####### -saltbae
 Shows pictures of the salt bae meme.
 
--loldog
+###### -loldog
 SHOWS PICTUREZ OV LOLDOGS!!
 -moderation +
 -----
 
--kick
--kick <username mentioned>
+###### -kick
 Kick someone.
 Needs permission kick_members.
 
--ban
+###### -ban
 Ban someone.
 Needs ban_members permission.
 
--clear
--clear <2 or over>
+###### -clear
 Clears the amount of messages you want to be cleared.
 Needs permission manage_messages.
 
--mute
--mute <username mentioned>
+###### -mute
 mute someone.
 Needs permission manage_messages.
 
--unmute
--unmute <username mentioned>
-unmute someone.
+###### -unmute
+Unmute someone.
 Needs permission manage_messages.
 
--unban
--unban <mentioned username>
+###### -unban
 Unban someone.
 Needs ban_members permission.
 
 -fun +
 -----
--coinflip
+###### -coinflip
 The bot chooses between heads or tails.
 
--8ball
+###### -8ball
 Use the magic 8ball!
 
--comic
+###### -comic
 Shows a random comic.
 
--cat
+###### -cat
 Shows a random cat picture.
 
--dog
+###### -dog
 Shows a random dog picture.
 
--say
+###### -say
 Say anything after the command and it will repeat it back.
 
--choose
+###### -choose
 Make CommuniBot choose over three or more things.
 
--roll
+###### -roll
 Roll any number above one.
 
 -server +
 -----
--serverinfo
+###### -serverinfo
 Check the info about the server.
 
--bans
+###### -bans
 Lists the banned people on the server.
 
--userinfo
+###### -userinfo
 Check info about you or other users
 
 -utilities +
 -----
--avatar
+####### -avatar
 Get the avatar link of a user.
 
--poll
+###### -poll
 Create a poll with the thumbs up, shrug and thumbs down reaction.
 
--embed
+###### -embed
 Embed a message so CommuniBot can say what you wanted.
 
 Credit
