@@ -62,7 +62,7 @@ async def help(ctx):
 @bot.group(pass_context=True)
 async def fun(ctx):
 	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.', color=0x2874A6)
+		embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.', color=0x2874A6)
 		await bot.say(embed=embed)
 @bot.command(pass_context=True)
 async def coinflip(ctx):
@@ -137,6 +137,12 @@ async def roll(ctx, number: int=100):
         await bot.say(f"{ctx.message.author.mention} | :game_die: {randint(1, number)}")
     else:
         await bot.say(f"{ctx.message.author.mention} Please insert a number higher than one.")
+
+@bot.command(pass_context=True)
+async def roast(ctx, person: discord.Member):
+    roast_possible_responses = ["{}, your ass must be pretty jealous of all the shit that comes out of your mouth.","{}, some day you'll go far, and I hope you stay there.","{}, I'm trying my absolute hardest to see things from your perspective, but I just can't get my head that far up my ass.","{}, I'm not a protocolgist, but I know an asshole when I see one.","Do yourself a favor and ignore anyone who tels you to be yourself. Bad idea in your case.","Everyone's entitled to act stupid once in awhile, but you really abuse the privilege.","{}, Can you die of constipation? I ask because I'm worried about how full of shit you are.","{}, Sorry, I didn't get that. I don't speak bullshit.","There are some remarkably dumb people in this world. Thanks for helping me understand that.","{}, I could eat a bowl of alphabet soup and shit out a smarter statement than whatever you just said.","{}, You always bring me so much joy, as soon as you leave the room.","{}, I'd tell you how I really feel, but I wasn't born with enough middle fingers to express myself in this case.","{}, You have the right to remain silent because whatever you say will probably be stupid anyway.","{}, your family tree must be a cactuss because you're all a bunch of pricks.","{}, You'll never be the man your mom is.","{}, If laughter is the best medicine, your face must be curing the world.","{}, scientists say the universe is made up of neutrons, protons and electrons. They forgot to mention morons, as you are one.","{}, if you really want to know about mistakes, you should ask your parents.","{}, I thought of you today. It reminded me to take the garbage out.","{}, you're such a beautiful, intelligent, wonderful person. Oh I'm sorry, I thought we were having a lying competition.","{}, I may love to shop but I'm not buying your bullshit.","{}, I just stepped in something that was smarter than you, and smelled better too."]
+    roast_current_response = random.choice(roast_possible_responses)
+    await bot.say(slap_current_response.format(person.mention))
 
 
 #info

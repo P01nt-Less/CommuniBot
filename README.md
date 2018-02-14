@@ -131,6 +131,9 @@ Make CommuniBot choose over three or more things.
 ###### -roll
 Roll any number above one.
 
+###### -roast
+Roast anyone with a burning statement.
+
 -server +
 -----
 ###### -serverinfo
