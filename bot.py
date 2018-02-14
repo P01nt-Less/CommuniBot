@@ -159,7 +159,7 @@ async def info(ctx):
     join.add_field(name = '__Information__', value = f"This bot was made in discord.py and was created by <@276043503514025984> (Pointless). It is for a bot that has moderation, fun commands, memes and more. It aims to make communities get less bots in total, so it doesn't look like there's too much bots in the Member list.", inline=True);
     join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.", inline=True);
     join.add_field(name = '__Helped__', value = f"<@338600456383234058> - Created -say, -poll and -embed command.", inline=True)
-    join.add_field(name = '__Uptime Status__', value = f"I've been online for %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s)!" % (week, day, hour, minute, second), inline=True)
+    join.add_field(name = '__Status__', value = f"Uptime: I've been online for %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s)!" % (week, day, hour, minute, second) + "\nTotal Servers: {} servers.".format(len(bot.servers))), inline=True)
     join.add_field(name = '__Links__', value = f"Invite link for the bot: https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591\nInvite link for the support server: https://discord.gg/Fz2pKVE\nLink for Discord Bots: https://discordbots.org/bot/406890237604790302\nLink for Github page: https://github.com/P01nt-Less/CommuniBot\nLink for Reddit page: https://www.reddit.com/r/The_Community/", inline=True)
 
     return await bot.say(embed = join);
@@ -412,8 +412,6 @@ async def softban(ctx, *, member : discord.Member = None):
  
 	embed = discord.Embed(description = "**%s** has been soft-banned!"%member.name, color = 0xFF0000)
 	return await bot.say(embed = embed)
-
-#github test
 		
 
 #server
