@@ -361,8 +361,8 @@ async def unban(ctx, *, member : discord.Member = None):
 @bot.command(pass_context=True, aliases=['purge','prune'])       
 async def clear(ctx, amount:int):
     if not ctx.message.author.server_permissions.manage_messages:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-		await bot.say(embed=embed)
+        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
+        await bot.say(embed=embed)
         return
     deleted = await bot.purge_from(ctx.message.channel, limit=amount)
     await asyncio.sleep(10)
@@ -375,6 +375,8 @@ async def clear(ctx, amount:int):
 @bot.command(pass_context=True, no_pm=True)
 async def mute(ctx, *, member : discord.Member, reason:str=None):
     if not ctx.message.author.server_permissions.manage_messages:
+        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
+        await bot.say(embed=embed)
         return
     overwrite = discord.PermissionOverwrite()
     overwrite.send_messages = False
@@ -386,6 +388,8 @@ async def mute(ctx, *, member : discord.Member, reason:str=None):
 @bot.command(pass_context=True, no_pm=True, aliases=['umute'])
 async def unmute(ctx, *, member : discord.Member):
     if not ctx.message.author.server_permissions.manage_messages:
+        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
+        await bot.say(embed=embed)
         return
     overwrite = discord.PermissionOverwrite()
     overwrite.send_messages = True
