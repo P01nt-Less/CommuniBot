@@ -323,6 +323,8 @@ async def kick(ctx, *, member : discord.Member = None):
 @bot.command(pass_context = True)
 async def ban(ctx, *, member : discord.Member = None, reason:str=None):
 	if not ctx.message.author.server_permissions.ban_members:
+		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
+		await bot.say(embed=embed)
 		return
  
 	if not member:
@@ -340,6 +342,8 @@ async def ban(ctx, *, member : discord.Member = None, reason:str=None):
 @bot.command(pass_context = True, aliases=['uban'])
 async def unban(ctx, *, member : discord.Member = None):
 	if not ctx.message.author.server_permissions.ban_members:
+		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
+		await bot.say(embed=embed)
 		return
  
 	if not member:
@@ -357,6 +361,8 @@ async def unban(ctx, *, member : discord.Member = None):
 @bot.command(pass_context=True, aliases=['purge','prune'])       
 async def clear(ctx, amount:int):
     if not ctx.message.author.server_permissions.manage_messages:
+		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
+		await bot.say(embed=embed)
         return
     deleted = await bot.purge_from(ctx.message.channel, limit=amount)
     await asyncio.sleep(10)
@@ -390,6 +396,8 @@ async def unmute(ctx, *, member : discord.Member):
 @bot.command(pass_context = True, aliases=['sban'])
 async def softban(ctx, *, member : discord.Member = None):
 	if not ctx.message.author.server_permissions.ban_members:
+		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
+		await bot.say(embed=embed)
 		return
  
 	if not member:
