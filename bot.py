@@ -69,14 +69,14 @@ async def coinflip(ctx):
     choice = random.choice(['Heads!','Tails!'])
     await bot.say(choice)
 @bot.command(name="8ball", pass_context=True, aliases=['eightball'])
-async def _8ball(*, question : str):
+async def _8ball(self, *, question : str):
     responses = [["Signs point to yes.", "Yes.", "Without a doubt.", "As I see it, yes.", "You may rely on it.", "It is decidedly so.", "Yes - definitely.", "It is certain.", "Most likely.", "Outlook good."],
     ["Reply hazy, try again.", "Concentrate and ask again.", "Better not tell you now.", "Cannot predict now.", "Ask again later."],
     ["My sources say no.", "Outlook not so good.", "Very doubtful.", "My reply is no.", "Don't count on it."]]
     if "?" in question:
-        await bot.say(":8ball:" + random.choice(random.choice(responses)))
+        await self.bot.say(":8ball:" + random.choice(random.choice(responses)))
     else:
-        await bot.say("That doesn't look like a question.")
+        await self.bot.say("That doesn't look like a question.")
 
 @bot.command(pass_context=True, no_pm=True)
 async def comic(ctx):
