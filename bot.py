@@ -413,7 +413,7 @@ async def softban(ctx, *, member : discord.Member = None):
 	embed = discord.Embed(description = "**%s** has been soft-banned!"%member.name, color = 0xFF0000)
 	return await bot.say(embed = embed)
 
-#github
+#github test
 		
 
 #server
