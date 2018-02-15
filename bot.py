@@ -634,7 +634,7 @@ async def utilities(ctx):
 	Usage: -utilities
 	'''
 	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another.\n\n-urbandict\nSearch definitions in the Urban Dictionary.', color=0x2874A6)
+		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages \n\n-urbandict\nSearch definitions in the Urban Dictionary.', color=0x2874A6)
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, no_pm=True)
@@ -679,8 +679,8 @@ async def embed(ctx,*, message: str):
 
 @bot.command(pass_context=True, aliases=['tr'])
 async def translate(ctx, tl, *words: str):
-    '''Translate something.
-    Usage: translate from-to text_to_translate
+    '''Translate something. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages
+    Usage: translate <from>-<to>
     Example: translate en-pl sandwich
     '''
     words = ' '.join(words)
