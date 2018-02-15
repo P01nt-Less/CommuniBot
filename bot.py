@@ -4,6 +4,7 @@ import discord
 from random import shuffle
 import configparser
 import random
+import requests
 import aiohttp
 import traceback
 import sys
@@ -491,7 +492,7 @@ async def userinfo(ctx, user: discord.Member = None):
 @bot.group(pass_context=True)
 async def utilities(ctx):
 	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.', color=0x2874A6)
+		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another.', color=0x2874A6)
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, no_pm=True)
@@ -523,5 +524,15 @@ async def embed(ctx,*, message: str):
     embed.description = (message)
     embed.set_footer(text = ctx.message.author.name)
     await bot.say(embed=embed)
+
+@bot.command(pass_context=True, aliases=['tr'])
+async def translate(ctx, tl, *words: str):
+    '''Translate something.
+    Usage: translate from-to text_to_translate
+    Example: translate en-pl sandwich
+    '''
+    words = ' '.join(words)
+    answer = requests.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}".format(words,tl)).json()
+    await bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
 
 bot.run(Secrets['Token'])
