@@ -45,20 +45,20 @@ async def ping(ctx):
     '''Check how fast the bot responds.
     Usage: -ping
     '''
-	channel = ctx.message.channel
-	t1 = time.perf_counter()
-	await bot.send_typing(channel)
-	t2 = time.perf_counter()
-	embed=discord.Embed(description='Pong! {} milliseconds.'.format(round((t2-t1)*1000)), color=0x2874A6)
-	await bot.say(embed=embed)
+    channel = ctx.message.channel
+    t1 = time.perf_counter()
+    await bot.send_typing(channel)
+    t2 = time.perf_counter()
+    embed=discord.Embed(description='Pong! {} milliseconds.'.format(round((t2-t1)*1000)), color=0x2874A6)
+    await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def prefixes(ctx):
     '''Check all of CommuniBot's prefixes.
     Usage: -prefixes
     '''
-	embed=discord.Embed(description='My prefix are: **-**, **:**,**@CommuniBot**, **CommuniBot**, **@CommuniBot#4412**, **CommuniBot#4412** and **communibot**.',color=0x2874A6)
-	await bot.say(embed=embed)
+    embed=discord.Embed(description='My prefix are: **-**, **:**,**@CommuniBot**, **CommuniBot**, **@CommuniBot#4412**, **CommuniBot#4412** and **communibot**.',color=0x2874A6)
+    await bot.say(embed=embed)
 
 #help
 @bot.command(pass_context=True)
@@ -66,17 +66,17 @@ async def help(ctx):
     '''See all of the commands from here.
     Usage: -help
     '''
-	embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-memes +\nShows a list of meme commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
-	await bot.say(embed=embed)
+    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-memes +\nShows a list of meme commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
+    await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
 async def fun(ctx):
     '''See all of the fun commands from here.
     Usage: -fun
     '''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.', color=0x2874A6)
-		await bot.say(embed=embed)
+    if ctx.invoked_subcommand is None:
+        embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.', color=0x2874A6)
+        await bot.say(embed=embed)
 @bot.command(pass_context=True)
 async def coinflip(ctx):
     '''Flip a coin to either land on heads or tails.
@@ -103,50 +103,50 @@ async def comic(ctx):
     '''Check out a random comic.
     Usage: -comic
     '''
-        api = "https://xkcd.com/{}/info.0.json".format(random.randint(1, 1800))
-        async with aiohttp.ClientSession() as session:
-            async with session.get(api) as r:
-                response = await r.json()
-                embed = discord.Embed(title="Comic", description=response["title"], color=0xFF0000)
-                embed.set_image(url=response["img"])
-                await bot.say(embed=embed)
+    api = "https://xkcd.com/{}/info.0.json".format(random.randint(1, 1800))
+    async with aiohttp.ClientSession() as session:
+        async with session.get(api) as r:
+            response = await r.json()
+            embed = discord.Embed(title="Comic", description=response["title"], color=0xFF0000)
+            embed.set_image(url=response["img"])
+            await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def cat(ctx):
     '''Check out a random cat.
     Usage: -cat
     '''
-        api = 'https://random.cat/meow'
-        async with aiohttp.ClientSession() as session:
-            async with session.get(api) as r:
-                if r.status == 200:
-                    response = await r.json()
-                    embed = discord.Embed(title="Cat", description="Here's your random cat image", color=0xFF0000)
-                    embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
-                    embed.set_image(url=response['file'])
-                    await bot.say(embed=embed)
-                else:
-                    await bot.say('Could not access random.cat API!')
+    api = 'https://random.cat/meow'
+    async with aiohttp.ClientSession() as session:
+        async with session.get(api) as r:
+            if r.status == 200:
+                response = await r.json()
+                embed = discord.Embed(title="Cat", description="Here's your random cat image", color=0xFF0000)
+                embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
+                embed.set_image(url=response['file'])
+                await bot.say(embed=embed)
+            else:
+                await bot.say('Could not access random.cat API!')
 
 @bot.command(pass_context=True)
 async def dog(ctx):
     '''Check out a random dog.
     Usage: -dog
     '''
-        api = "https://api.thedogapi.co.uk/v2/dog.php"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(api) as r:
-                if r.status == 200:
-                    response = await r.json()
-                    embed = discord.Embed(title="Dog", description="Here's your random Dog", color=0xFF0000)
-                    embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
-                    embed.set_image(url=response['data'][0]["url"])
-                    await bot.say(embed=embed)
-                else:
-                    x = "Could not find a dog :sad:!"
-                    embed = discord.Embed(title='Error', color=colorfail)
-                    embed.description = x
-                    await bot.say(embed=embed)
+    api = "https://api.thedogapi.co.uk/v2/dog.php"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(api) as r:
+            if r.status == 200:
+                response = await r.json()
+                embed = discord.Embed(title="Dog", description="Here's your random Dog", color=0xFF0000)
+                embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
+                embed.set_image(url=response['data'][0]["url"])
+                await bot.say(embed=embed)
+            else:
+                x = "Could not find a dog :sad:!"
+                embed = discord.Embed(title='Error', color=colorfail)
+                embed.description = x
+                await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def say(ctx, *, message: str):
@@ -186,7 +186,6 @@ async def roast(ctx, person: discord.Member):
     roast_current_response = random.choice(roast_possible_responses)
     await bot.say(roast_current_response.format(person.mention))
 
-
 #info
 @bot.command(pass_context=True, aliases=['botinfo','information','botinformation','binfo','boti','binformation'])
 async def info(ctx):
@@ -216,9 +215,9 @@ async def actions(ctx):
     '''Shows the action commands.
     Usage: -action
     '''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Action commands\n\n\n-punch\nPunches someone you\'d like to do that to.\n\n-legkick\nKicks anyone you like.\n\n-hug\nHugs anyone you like.\n\n-kiss\nKiss anyone you like.\n\n-uppercut\nUppercut anybody you like.\n\n-wave\nWave at anyone you\'d like to.\n\n-smile\nJust smile.\n\n-frown\nFrown. :(\n\n-slap\nSlap anyone you like.\n\n-stab\nStab people! Muehehehe!\n\n-murder\nMurder someone...\n\n-shoot\nShoot a person! Dun dun dunn!!', color=0x2874A6)
-		await bot.say(embed=embed)
+    if ctx.invoked_subcommand is None:
+        embed=discord.Embed(description='Action commands\n\n\n-punch\nPunches someone you\'d like to do that to.\n\n-legkick\nKicks anyone you like.\n\n-hug\nHugs anyone you like.\n\n-kiss\nKiss anyone you like.\n\n-uppercut\nUppercut anybody you like.\n\n-wave\nWave at anyone you\'d like to.\n\n-smile\nJust smile.\n\n-frown\nFrown. :(\n\n-slap\nSlap anyone you like.\n\n-stab\nStab people! Muehehehe!\n\n-murder\nMurder someone...\n\n-shoot\nShoot a person! Dun dun dunn!!', color=0x2874A6)
+        await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
 async def punch(ctx, person: discord.Member): 
@@ -339,9 +338,9 @@ async def insovietrussia(ctx):
     '''Randomizes between lots of insovietrussia jokes.
     Usage: -insovietrussia
     '''
-	insovietrussia_possible_responses = ["In America, you drive a car. In Soviet Russia, a car drives you!",  "In America the president gets assassinated. In soviet Russia, the president assassinates you!", "In America, you throw a grenade! In Soviet Russia, a grenade throws you!", "In America, you eat food. In Soviet Russia, food eats you!", "In America, you write 'R'. In Soviet Russia, you write 'Я'!", "In America, you break the law. In Soviet Russia, the law breaks you!", "Roses are red, Violets are blue, In Soviet Russia, a poem writes you!", "In America, the Grinch steals Christmas. In Soviet Russia, Christmas steals the Grinch!", "In America, you laugh at jokes. In Soviet Russia, jokes laugh at you!", "In America, Jesus sacrifices for you. In Soviet Russia, you sacrifice for Jesus!", "In America, Russians spy on you. In Soviet Russia, you spy on Russians!", "In America, you find Waldo. In Soviet Russia, Waldo finds you!", "In America, you call the police. In Soviet Russia, police calls you!", "In America, you watch TV. In Soviet Russia, the TV watches you!", "In America, you eat a cookie. But in Soviet Russia, the cookie eats you!", "In America, you play games. In Soviet Russia, games play you!"]
-	insovietrussia_current_response = random.choice(insovietrussia_possible_responses)
-	await bot.say(insovietrussia_current_response)
+    insovietrussia_possible_responses = ["In America, you drive a car. In Soviet Russia, a car drives you!",  "In America the president gets assassinated. In soviet Russia, the president assassinates you!", "In America, you throw a grenade! In Soviet Russia, a grenade throws you!", "In America, you eat food. In Soviet Russia, food eats you!", "In America, you write 'R'. In Soviet Russia, you write 'Я'!", "In America, you break the law. In Soviet Russia, the law breaks you!", "Roses are red, Violets are blue, In Soviet Russia, a poem writes you!", "In America, the Grinch steals Christmas. In Soviet Russia, Christmas steals the Grinch!", "In America, you laugh at jokes. In Soviet Russia, jokes laugh at you!", "In America, Jesus sacrifices for you. In Soviet Russia, you sacrifice for Jesus!", "In America, Russians spy on you. In Soviet Russia, you spy on Russians!", "In America, you find Waldo. In Soviet Russia, Waldo finds you!", "In America, you call the police. In Soviet Russia, police calls you!", "In America, you watch TV. In Soviet Russia, the TV watches you!", "In America, you eat a cookie. But in Soviet Russia, the cookie eats you!", "In America, you play games. In Soviet Russia, games play you!"]
+    insovietrussia_current_response = random.choice(insovietrussia_possible_responses)
+    await bot.say(insovietrussia_current_response)
 @bot.command(pass_context=True)
 async def chucknorris(ctx):
     '''Randomizes between lots of Chuck Norris jokes.
@@ -378,17 +377,17 @@ async def saltbae(ctx):
     '''Randomizes between lots of saltbae memes.
     Usage: -saltbae
     '''
-	saltbae_possible_responses = ['{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/wrong-answer-you-aint-cheat.jpg','{} http://i.imgur.com/yYT55QA.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/914/6b4.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/916/fe7.jpg','{} https://i.imgur.com/XuFg46x.jpg','{} https://i.imgur.com/vlA7u5k.jpg','{} https://stepcdn.com/assets/2017-02/03/11/8e3r2/trump-twitter-700x.jpg','{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/adding-salt-to-your-drama.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/211/181/422.jpg','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-im-missing-the-25131584.png','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-sprinkle-dat-extra-16049743.png','{} https://ecdn.teacherspayteachers.com/thumbitem/-Salt-Bae-Meme-Writing-Freebie-2978990-1485278672/original-2978990-1.jpg','{} https://pics.me.me/when-black-parents-add-an-apostrophe-to-their-childs-name-11763958.png','{} http://i0.kym-cdn.com/photos/images/facebook/001/209/136/1ef.png','{} https://pics.me.me/your-head-salt-bae-who-won-the-meme-battle-for-13363207.png','http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/Caucasian-on-your-cv.jpg','{} https://lh3.googleusercontent.com/vnCrrk7gvVIoLQsV4HnLiabPXqKA7ls86cm-2Snuk-B9NOup-OtblK8UXYdo3qhBIk7SqtOTUEVpIOMnYmAzJ_H1jKIsJ8ElWPipvAkUthqAxhtwG1ar3ANnuFdC5pTbeNrqb8Q-','{} https://pics.me.me/cheating-lies-deceit-ent-unfaithful-god-when-he-was-creating-11587232.png','{} https://pics.me.me/mexico-autodeciaraodny-autobusas-rapid-a-pre-playas-de-tijuana-ropuerto-11675269.png','{} https://pics.me.me/thedukeofmeines-edukeof-memes-saltbae-911-jetfeul-steelbeams-twintowers-bush-proof-12396857.png','{} https://static.boredpanda.com/blog/wp-content/uploads/2017/01/818286176889085952-png__700.jpg']
-	saltbae_current_response = random.choice(saltbae_possible_responses)
-	await bot.say(saltbae_current_response.format(ctx.message.author.mention))
+    saltbae_possible_responses = ['{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/wrong-answer-you-aint-cheat.jpg','{} http://i.imgur.com/yYT55QA.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/914/6b4.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/916/fe7.jpg','{} https://i.imgur.com/XuFg46x.jpg','{} https://i.imgur.com/vlA7u5k.jpg','{} https://stepcdn.com/assets/2017-02/03/11/8e3r2/trump-twitter-700x.jpg','{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/adding-salt-to-your-drama.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/211/181/422.jpg','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-im-missing-the-25131584.png','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-sprinkle-dat-extra-16049743.png','{} https://ecdn.teacherspayteachers.com/thumbitem/-Salt-Bae-Meme-Writing-Freebie-2978990-1485278672/original-2978990-1.jpg','{} https://pics.me.me/when-black-parents-add-an-apostrophe-to-their-childs-name-11763958.png','{} http://i0.kym-cdn.com/photos/images/facebook/001/209/136/1ef.png','{} https://pics.me.me/your-head-salt-bae-who-won-the-meme-battle-for-13363207.png','http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/Caucasian-on-your-cv.jpg','{} https://lh3.googleusercontent.com/vnCrrk7gvVIoLQsV4HnLiabPXqKA7ls86cm-2Snuk-B9NOup-OtblK8UXYdo3qhBIk7SqtOTUEVpIOMnYmAzJ_H1jKIsJ8ElWPipvAkUthqAxhtwG1ar3ANnuFdC5pTbeNrqb8Q-','{} https://pics.me.me/cheating-lies-deceit-ent-unfaithful-god-when-he-was-creating-11587232.png','{} https://pics.me.me/mexico-autodeciaraodny-autobusas-rapid-a-pre-playas-de-tijuana-ropuerto-11675269.png','{} https://pics.me.me/thedukeofmeines-edukeof-memes-saltbae-911-jetfeul-steelbeams-twintowers-bush-proof-12396857.png','{} https://static.boredpanda.com/blog/wp-content/uploads/2017/01/818286176889085952-png__700.jpg']
+    saltbae_current_response = random.choice(saltbae_possible_responses)
+    await bot.say(saltbae_current_response.format(ctx.message.author.mention))
 @bot.command(pass_context=True)
 async def loldog(ctx):
     '''Randomizes between lots of loldogs.
     Usage: -loldog
     '''
-	saltbae_possible_responses = ['{} https://i.imgflip.com/vgh66.jpg','{} http://s2.quickmeme.com/img/b0/b0039e31a5f5ff0fbf9336d47e5d3ec2a80232f3e31e10883c15dbc66be3809d.jpg','{} http://weknowmemes.com/generator/uploads/generated/g1365444091774137766.jpg','{} https://i.chzbgr.com/original/1738866432/hC0106396/','{} http://www.imagefully.com/wp-content/uploads/2015/08/I-Dunno-Lol-Dog-Image.jpg','{} http://images4.fanpop.com/image/photos/15900000/lol-dogs-dogs-15905734-500-375.jpg','{} http://4.bp.blogspot.com/-Rny6ymoavqs/UAhodFDkDPI/AAAAAAAAsiU/8nUf9LUjGyw/s1600/funny-dog-pictures-there-there-ugly-bald-puppy.jpg','{} http://images6.fanpop.com/image/photos/37300000/Funny-Dogs-dogs-37339100-421-428.jpg','{} https://ilifejourney.files.wordpress.com/2012/10/dog-and-spiders.jpg','{} https://i1.wp.com/thefunniestpictures.com/wp-content/uploads/2014/08/Funny-Dog-1.jpg?fit=499%2C334&ssl=1','{} https://ci.memecdn.com/722962.jpg','{} https://collarfolk.com/wp-content/uploads/2017/05/8963bb3fdd1f319b0154cc646a0de37a.jpg','{} https://memegenerator.net/img/instances/500x/64586542/oh-por-deus.jpg','{} https://imgfave.azureedge.net/image_cache/1383619315754765.jpg','{} https://www.seabreeze.com.au/Img/Photos/Other/3722545.jpg','{} http://blogs.discovermagazine.com/discoblog/files/2012/10/dog_meme.jpeg','{} https://static.fjcdn.com/pictures/Lol_98ff89_2584253.jpg','{} http://i0.kym-cdn.com/photos/images/facebook/000/151/934/imade40cakes128548225192353750.jpg','{} http://s2.quickmeme.com/img/a7/a70f44decdb833e94ed530c63cce6775182c03a2f8d5f8301114b52f9724ce80.jpg','{} http://funnyanimalphoto.com/wp-content/uploads/2013/10/dog_loves_bacon.jpg?bd03d3','{} http://s2.quickmeme.com/img/fc/fc02f94bf37ff24f18337ac7de31631ef2b35296e87409184aef259c94f53d1d.jpg','{} https://i.imgur.com/u7mM6mE.jpg', '{} https://i.pinimg.com/736x/71/27/71/712771dd7c68cb9c3ccccc69a9f2e953--bit.jpg','{} https://cdn.discordapp.com/attachments/393566779269709824/396739756437929984/doggie.gif\nCredit to @Windfave#5304.']
-	saltbae_current_response = random.choice(saltbae_possible_responses)
-	await bot.say(saltbae_current_response.format(ctx.message.author.mention))
+    saltbae_possible_responses = ['{} https://i.imgflip.com/vgh66.jpg','{} http://s2.quickmeme.com/img/b0/b0039e31a5f5ff0fbf9336d47e5d3ec2a80232f3e31e10883c15dbc66be3809d.jpg','{} http://weknowmemes.com/generator/uploads/generated/g1365444091774137766.jpg','{} https://i.chzbgr.com/original/1738866432/hC0106396/','{} http://www.imagefully.com/wp-content/uploads/2015/08/I-Dunno-Lol-Dog-Image.jpg','{} http://images4.fanpop.com/image/photos/15900000/lol-dogs-dogs-15905734-500-375.jpg','{} http://4.bp.blogspot.com/-Rny6ymoavqs/UAhodFDkDPI/AAAAAAAAsiU/8nUf9LUjGyw/s1600/funny-dog-pictures-there-there-ugly-bald-puppy.jpg','{} http://images6.fanpop.com/image/photos/37300000/Funny-Dogs-dogs-37339100-421-428.jpg','{} https://ilifejourney.files.wordpress.com/2012/10/dog-and-spiders.jpg','{} https://i1.wp.com/thefunniestpictures.com/wp-content/uploads/2014/08/Funny-Dog-1.jpg?fit=499%2C334&ssl=1','{} https://ci.memecdn.com/722962.jpg','{} https://collarfolk.com/wp-content/uploads/2017/05/8963bb3fdd1f319b0154cc646a0de37a.jpg','{} https://memegenerator.net/img/instances/500x/64586542/oh-por-deus.jpg','{} https://imgfave.azureedge.net/image_cache/1383619315754765.jpg','{} https://www.seabreeze.com.au/Img/Photos/Other/3722545.jpg','{} http://blogs.discovermagazine.com/discoblog/files/2012/10/dog_meme.jpeg','{} https://static.fjcdn.com/pictures/Lol_98ff89_2584253.jpg','{} http://i0.kym-cdn.com/photos/images/facebook/000/151/934/imade40cakes128548225192353750.jpg','{} http://s2.quickmeme.com/img/a7/a70f44decdb833e94ed530c63cce6775182c03a2f8d5f8301114b52f9724ce80.jpg','{} http://funnyanimalphoto.com/wp-content/uploads/2013/10/dog_loves_bacon.jpg?bd03d3','{} http://s2.quickmeme.com/img/fc/fc02f94bf37ff24f18337ac7de31631ef2b35296e87409184aef259c94f53d1d.jpg','{} https://i.imgur.com/u7mM6mE.jpg', '{} https://i.pinimg.com/736x/71/27/71/712771dd7c68cb9c3ccccc69a9f2e953--bit.jpg','{} https://cdn.discordapp.com/attachments/393566779269709824/396739756437929984/doggie.gif\nCredit to @Windfave#5304.']
+    saltbae_current_response = random.choice(saltbae_possible_responses)
+    await bot.say(saltbae_current_response.format(ctx.message.author.mention))
 
 
 #moderation
@@ -397,9 +396,9 @@ async def moderation(ctx):
     '''Shows a list of moderation commands.
     Usage: -moderation
     '''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Moderation commands\n\n-kick\n-kick <username mentioned>\nKick someone.\nNeeds permission kick_members.\n\n-ban\n-ban <mentioned username>\nBan someone.\nNeeds ban_members permission.\n\n-clear\n-clear <2 or over>\nClears the amount of messages you want to be cleared.\nNeeds permission manage_messages.\n\n-mute\n-mute <username mentioned>\nmute someone.\nNeeds permission manage_messages.\n\n-unmute\n-unmute <username mentioned>\nunmute someone.\nNeeds permission manage_messages.\n\n-unban\n-unban <mentioned username>\nUnban someone.\nNeeds ban_members permission.', color=0x2874A6)
-		await bot.say(embed=embed)
+    if ctx.invoked_subcommand is None:
+	    embed=discord.Embed(description='Moderation commands\n\n-kick\n-kick <username mentioned>\nKick someone.\nNeeds permission kick_members.\n\n-ban\n-ban <mentioned username>\nBan someone.\nNeeds ban_members permission.\n\n-clear\n-clear <2 or over>\nClears the amount of messages you want to be cleared.\nNeeds permission manage_messages.\n\n-mute\n-mute <username mentioned>\nmute someone.\nNeeds permission manage_messages.\n\n-unmute\n-unmute <username mentioned>\nunmute someone.\nNeeds permission manage_messages.\n\n-unban\n-unban <mentioned username>\nUnban someone.\nNeeds ban_members permission.', color=0x2874A6)
+	    await bot.say(embed=embed)
 
 @bot.command(pass_context = True)
 async def kick(ctx, *, member : discord.Member = None):
@@ -407,29 +406,29 @@ async def kick(ctx, *, member : discord.Member = None):
     Usage: -kick <@person>
     Example: -kick @Pointless
     '''
-	if not ctx.message.author.server_permissions.kick_members:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: kick_members.', color=0xFF0000)
-		await bot.say(embed=embed)
-		return
+    if not ctx.message.author.server_permissions.kick_members:
+        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: kick_members.', color=0xFF0000)
+        await bot.say(embed=embed)
+        return
  
-	if not member:
-		return await bot.say(ctx.message.author.mention + ", specify a user to kick!")
-	try:
-		await bot.kick(member)
-	except Exception as e:
-		if 'Privilege is too low' in str(e):
-			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-			return await bot.say(embed = embed)
+    if not member:
+        return await bot.say(ctx.message.author.mention + ", specify a user to kick!")
+    try:
+        await bot.kick(member)
+    except Exception as e:
+        if 'Privilege is too low' in str(e):
+            embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
+            return await bot.say(embed = embed)
  
-	embed = discord.Embed(description =f"**%s** has been kicked!"%member.name, color = 0xFF0000)
-	return await bot.say(embed = embed)
+    embed = discord.Embed(description =f"**%s** has been kicked!"%member.name, color = 0xFF0000)
+    return await bot.say(embed = embed)
 
 @bot.command(pass_context = True)
 async def ban(ctx, *, member : discord.Member = None, reason:str=None):
-    '''Ban someone.
-    Usage: -ban <@person>
-    Example: -ban @Pointless
-    '''
+	'''Ban someone.
+	Usage: -ban <@person>
+	Example: -ban @Pointless
+	'''
 	if not ctx.message.author.server_permissions.ban_members:
 		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
 		await bot.say(embed=embed)
@@ -449,10 +448,10 @@ async def ban(ctx, *, member : discord.Member = None, reason:str=None):
 
 @bot.command(pass_context = True, aliases=['uban'])
 async def unban(ctx, *, member : discord.Member = None):
-    '''Unban someone.
-    Usage: -unban <@person>
-    Example: -unban @Pointless
-    '''
+	'''Unban someone.
+	Usage: -unban <@person>
+	Example: -unban @Pointless
+	'''
 	if not ctx.message.author.server_permissions.ban_members:
 		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
 		await bot.say(embed=embed)
@@ -523,10 +522,10 @@ async def unmute(ctx, *, member : discord.Member):
     return await bot.say(embed = embed)
 @bot.command(pass_context = True, aliases=['sban'])
 async def softban(ctx, *, member : discord.Member = None):
-    '''Softban someone.
-    Usage: -softban <@person>
-    Example: -softban @Pointless
-    '''
+	'''Softban someone.
+	Usage: -softban <@person>
+	Example: -softban @Pointless
+	'''
 	if not ctx.message.author.server_permissions.ban_members:
 		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
 		await bot.say(embed=embed)
@@ -549,10 +548,10 @@ async def softban(ctx, *, member : discord.Member = None):
 #server
 @bot.group(pass_context=True)
 async def server(ctx):
-    '''Shows a list of server commands.
-    Usage: -server
-    Example: -server
-    '''
+	'''Shows a list of server commands.
+	Usage: -server
+	Example: -server
+	'''
 	if ctx.invoked_subcommand is None:
 		embed=discord.Embed(description='Server commands\n\n-serverinfo\nCheck the info about the server.\n\n-bans\nLists the banned people on the server.\n\n-userinfo\nCheck info about you or other users.', color=0x2874A6)
 		await bot.say(embed=embed)
@@ -631,11 +630,11 @@ async def userinfo(ctx, user: discord.Member = None):
 #utilities
 @bot.group(pass_context=True)
 async def utilities(ctx):
-    '''Shows a list of utility commands.
-    Usage: -utilities
-    '''
+	'''Shows a list of utility commands.
+	Usage: -utilities
+	'''
 	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another.', color=0x2874A6)
+		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another.\n\n-urbandict\nSearch definitions in the Urban Dictionary.', color=0x2874A6)
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, no_pm=True)
@@ -687,5 +686,17 @@ async def translate(ctx, tl, *words: str):
     words = ' '.join(words)
     answer = requests.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}".format(words,tl)).json()
     await bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
+
+@bot.command(pass_context=True, aliases=['urbandictionary','urbandict','udict','udictionary','udefine','urbandefine'])
+async def urban(ctx, *words: str):
+    '''Check something in urban dictionary
+    Usage: urbandict <word>
+    Example: urbandict Hello
+    '''
+    words = ''.join(words)
+    answer = requests.get("http://api.urbandictionary.com/v0/define?term={0}".format(words)).json()
+    if len(answer['list']) == 0:
+        await bot.say("No definition found.")
+    await bot.say("**{0}**: {1}".format(words, answer['list'][0]['definition']))
 
 bot.run(Secrets['Token'])
