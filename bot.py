@@ -480,9 +480,10 @@ async def clear(ctx, amount:int):
         await bot.say(embed=embed)
         return
     deleted = await bot.purge_from(ctx.message.channel, limit=amount)
-    await asyncio.sleep(10)
+    await asyncio.sleep(0.1)
     try:
         deleted_message = await bot.say("{}, I have deleted {} messages.".format(ctx.message.author.mention, len(deleted)))
+        await asyncio.sleep(5)
         await bot.delete_message(deleted_message)
     except:
         pass
