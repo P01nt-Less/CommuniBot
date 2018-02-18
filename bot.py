@@ -66,7 +66,7 @@ async def help(ctx):
     '''See all of the commands from here.
     Usage: -help
     '''
-    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-memes +\nShows a list of meme commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
+    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
     await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
