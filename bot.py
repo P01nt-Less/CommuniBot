@@ -148,14 +148,6 @@ async def dog(ctx):
                 embed.description = x
                 await bot.say(embed=embed)
 
-@bot.command(pass_context=True)
-async def say(ctx, *, message: str):
-    '''Say anything and the bot will repeat it.
-    Usage: -say <text>
-    Example: -say I like potatoes!
-    '''
-    await bot.say(message)
-
 @bot.command(name='choose', aliases=['select','choice'],pass_context=True)
 async def choose(self, ctx, *args):
     '''Make the bot choose over two or more things.
