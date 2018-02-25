@@ -722,4 +722,9 @@ async def urban(ctx, *words: str):
         await bot.say("No definition found.")
     await bot.say("**{0}**: {1}".format(words, answer['list'][0]['definition']))
 
+@bot.command(name='_-', pass_context=True)
+async def _correction(ctx):
+    '''-_- Correction.
+    '''
+    return
 bot.run(Secrets['Token'])
