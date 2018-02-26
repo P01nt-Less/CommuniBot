@@ -73,7 +73,7 @@ async def help(ctx):
     '''See all of the commands from here.
     Usage: -help
     '''
-    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
+    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.\n\n-math +\nShows a list of math commands.', color=0x2874A6)
     await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
@@ -727,4 +727,63 @@ async def _correction(ctx):
     '''-_- Correction.
     '''
     return
+
+@bot.group(pass_context=True, aliases=['maths','mathematics','mathematic','calculation'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def math(ctx):
+	'''Shows a list of math commands.
+	Usage: -math
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Math commands\n\n\n-add\nAdd two numbers together.\n\n-subtract\nSubtract two numbers.\n\n-multiply\nMultiply two numbers together.\n\n-divide\nDivide two numbers together\n\n-modulo\nFind the remainder of a number when divided together.\n\n-exponent\nFind a number to the power of another number.', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.command(pass_context=True, aliases=['addition'])
+async def add(ctx, number1: int, number2: int):
+    '''Add two numbers together.
+    Usage: -add <a> <b>
+    Example: -add 2 2
+    '''
+    await bot.say(number1 + number2)
+
+@bot.command(pass_context=True, aliases=['subtraction','minus'])
+async def subtract(ctx, number1: int, number2: int):
+    '''Subtract two numbers.
+    Usage: -subtract <a> <b>
+    Example: -subtract 4 2
+    '''
+    await bot.say(number1 - number2)
+
+@bot.command(pass_context=True, aliases=['times','multiplication'])
+async def multiply(ctx, number1: int, number2: int):
+    '''Multiply two numbers together.
+    Usage: -multiply <a> <b>
+    Example: -multiply 2 2
+    '''
+    await bot.say(number1 * number2)
+
+@bot.command(pass_context=True, aliases=['division','share'])
+async def divide(ctx, number1: int, number2: int):
+    '''Divide two numbers.
+    Usage: -divide <a> <b>
+    Example: -divide 10 5
+    '''
+    await bot.say(number1 / number2)
+
+@bot.command(pass_context=True, aliases=['remainder','modulus'])
+async def modulo(ctx, number1: int, number2: int):
+    '''Find the remainder of when you divide two numbers together.
+    Usage: -modulo <a> <b>
+    Example: -modulo 7 3
+    '''
+    await bot.say(number1 % number2)
+
+@bot.command(pass_context=True, aliases=['power'])
+async def exponent(ctx, number1: int, number2: int):
+    '''Find the power of a number how many times you like.
+    Usage: -exponent <a> <b>
+    Example: -exponent 4 2
+    '''
+    await bot.say(number1 ** number2)
+
 bot.run(Secrets['Token'])
