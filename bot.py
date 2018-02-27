@@ -924,15 +924,6 @@ async def kelvin_centigrade(ctx, number: int):
     '''
     await bot.say(number - 273.15 )
 
-@bot.command(name='kelvin-centigrade',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def kelvin_centigrade(ctx, number: int):
-    '''Convert Kelvin to Centigrade
-    Usage: -kelvin-Centigrade <number>
-    Example: -kelvin-Centigrade 10
-    '''
-    await bot.say(number - 273.15 )
-
 @bot.command(name='kelvin-rankine',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kelvin_rankine(ctx, number: int):
