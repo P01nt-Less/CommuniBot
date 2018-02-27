@@ -652,7 +652,7 @@ async def utilities(ctx):
 	Usage: -utilities
 	'''
 	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages \n\n-urbandict\nSearch definitions in the Urban Dictionary.', color=0x2874A6)
+		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages \n\n-urbandict\nSearch definitions in the Urban Dictionary.\n\n-math +\nShows a list of mathematic commands.\n\n-conversion +\nShows a list of conversion commands.', color=0x2874A6)
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, no_pm=True)
@@ -739,6 +739,7 @@ async def math(ctx):
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, aliases=['addition'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def add(ctx, number1: int, number2: int):
     '''Add two numbers together.
     Usage: -add <a> <b>
@@ -747,6 +748,7 @@ async def add(ctx, number1: int, number2: int):
     await bot.say(number1 + number2)
 
 @bot.command(pass_context=True, aliases=['subtraction','minus'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def subtract(ctx, number1: int, number2: int):
     '''Subtract two numbers.
     Usage: -subtract <a> <b>
@@ -755,6 +757,7 @@ async def subtract(ctx, number1: int, number2: int):
     await bot.say(number1 - number2)
 
 @bot.command(pass_context=True, aliases=['times','multiplication'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def multiply(ctx, number1: int, number2: int):
     '''Multiply two numbers together.
     Usage: -multiply <a> <b>
@@ -763,6 +766,7 @@ async def multiply(ctx, number1: int, number2: int):
     await bot.say(number1 * number2)
 
 @bot.command(pass_context=True, aliases=['division','share'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def divide(ctx, number1: int, number2: int):
     '''Divide two numbers.
     Usage: -divide <a> <b>
@@ -771,6 +775,7 @@ async def divide(ctx, number1: int, number2: int):
     await bot.say(number1 / number2)
 
 @bot.command(pass_context=True, aliases=['remainder','modulus'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def modulo(ctx, number1: int, number2: int):
     '''Find the remainder of when you divide two numbers together.
     Usage: -modulo <a> <b>
@@ -779,6 +784,7 @@ async def modulo(ctx, number1: int, number2: int):
     await bot.say(number1 % number2)
 
 @bot.command(pass_context=True, aliases=['power'])
+@commands.cooldown(1, 3, commands.BucketType.user)
 async def exponent(ctx, number1: int, number2: int):
     '''Find the power of a number how many times you like.
     Usage: -exponent <a> <b>
@@ -786,4 +792,182 @@ async def exponent(ctx, number1: int, number2: int):
     '''
     await bot.say(number1 ** number2)
 
+@bot.group(pass_context=True, aliases=['convert'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def conversion(ctx):
+	'''Shows a list of commands that converts from one unit of whatever to another.
+	Usage: -conversion
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Conversion commands\n\n\n-temperature +\nShows a list of temperature conversion commands.', color=0x2874A6)
+		await bot.say(embed=embed)
+    
+@bot.group(pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def temperature(ctx):
+	'''Shows a list of temperature conversion commands.
+	Usage: -temperature
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Temperature Conversion commands\n\n\n-centigrade +\nShows a list of centigrade commands.\n\n-kelvin +\nShows a list of Kelvin commands.\n\n-fahrenheit +\nShows a list of Fahrenheit commands.\n\n-rankine +\nShows a list of Rankine commands.', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.group(pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def centigrade(ctx):
+	'''Shows a list of centigrade conversion commands.
+	Usage: -centigrade
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Centigrade Conversion commands\n\n\n-centigrade-fahrenheit\nConverts Centigrade to Fahrenheit.\n\n-centigrade-kelvin\nConverts Centigrade to Kelvin.\n\n-centigrade-rankine\nConverts Centigrade to Rankine.', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.group(pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def kelvin(ctx):
+	'''Shows a list of Kelvin conversion commands.
+	Usage: -kelvin
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Kelvin Conversion commands\n\n\n-kelvin-fahrenheit\nConverts Kelvin to Fahrenheit.\n\n-kelvin-centigrade\nConverts Kelvin to Centigrade.\n\n-kelvin-rankine\nConverts Kelvin to Rankine.', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.group(pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def fahrenheit(ctx):
+	'''Shows a list of Fahrenheit conversion commands.
+	Usage: -fahrenheit
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Fahrenheit Conversion commands\n\n\n-fahrenheit-centigrade\nConverts Fahrenheit to Centigrade.\n\n-fahrenheit-kelvin\nConverts Fahrenheit to Kelvin.\n\n-fahrenheit-rankine\nConverts Fahrenheit to Rankine.', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.group(pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def rankine(ctx):
+	'''Shows a list of Rankine conversion commands.
+	Usage: -rankine
+	'''
+	if ctx.invoked_subcommand is None:
+		embed=discord.Embed(description='Rankine Conversion commands\n\n\n-rankine-fahrenheit\nConverts Rankine to Fahrenheit.\n\n-rankine-kelvin\nConverts Rankine to Kelvin.\n\n-rankine-centigrade\nConverts Rankine to Centigrade..', color=0x2874A6)
+		await bot.say(embed=embed)
+
+@bot.command(name='centigrade-fahrenheit',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def centigrade_fahrenheit(ctx, number: int):
+    '''Convert Centigrade to Fahrenheit
+    Usage: -centigrade-fahrenheit <number>
+    Example: -centigrade-fahrenheit 10
+    '''
+    await bot.say( (number * 1.8) + 32)
+
+@bot.command(name='centigrade-kelvin',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def centigrade_kelvin(ctx, number: int):
+    '''Convert Centigrade to Kelvin
+    Usage: -centigrade-kelvin <number>
+    Example: -centigrade-kelvin 10
+    '''
+    await bot.say(number + 273.15)
+
+@bot.command(name='centigrade-rankine',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def centigrade_rankine(ctx, number: int):
+    '''Convert Centigrade to Rankine
+    Usage: -centigrade-rankine <number>
+    Example: -centigrade-rankine 10
+    '''
+    await bot.say((number + 273.15) * (9/5))
+
+@bot.command(name='fahrenheit-centigrade',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def fahrenheit_centigrade(ctx, number: int):
+    '''Convert Fahrenheit to Centigrade
+    Usage: -fahrenheit-centigrade <number>
+    Example: -fahrenheit-centigrade 10
+    '''
+    await bot.say((number - 32) / 1.8)
+
+@bot.command(name='fahrenheit-kelvin',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def fahrenheit_kelvin(ctx, number: int):
+    '''Convert Fahrenheit to Kelvin
+    Usage: -fahrenheit-kelvin <number>
+    Example: -fahrenheit-kelvin 10
+    '''
+    await bot.say((number - 32) / 1.8)
+
+@bot.command(name='fahrenheit-rankine',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def fahrenheit_rankine(ctx, number: int):
+    '''Convert Fahrenheit to Rankine
+    Usage: -fahrenheit-rankine <number>
+    Example: -fahrenheit-rankine 10
+    '''
+    await bot.say(number + 459.67)
+
+@bot.command(name='kelvin-fahrenheit',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def kelvin_fahrenheit(ctx, number: int):
+    '''Convert Kelvin to Fahrenheit
+    Usage: -kelvin-fahrenheit <number>
+    Example: -kelvin-fahrenheit 10
+    '''
+    await bot.say((number * (9/5)) - 459.67)
+
+@bot.command(name='kelvin-centigrade',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def kelvin_centigrade(ctx, number: int):
+    '''Convert Kelvin to Centigrade
+    Usage: -kelvin-Centigrade <number>
+    Example: -kelvin-Centigrade 10
+    '''
+    await bot.say(number - 273.15 )
+
+@bot.command(name='kelvin-centigrade',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def kelvin_centigrade(ctx, number: int):
+    '''Convert Kelvin to Centigrade
+    Usage: -kelvin-Centigrade <number>
+    Example: -kelvin-Centigrade 10
+    '''
+    await bot.say(number - 273.15 )
+
+@bot.command(name='kelvin-rankine',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def kelvin_rankine(ctx, number: int):
+    '''Convert Kelvin to Rankine
+    Usage: -kelvin-rankine <number>
+    Example: -kelvin-rankine 10
+    '''
+    await bot.say(number * (9/5))
+
+@bot.command(name='rankine-fahrenheit',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def rankine_fahrenheit(ctx, number: int):
+    '''Convert Rankine to Fahrenheit
+    Usage: -rankine-fahreneheit <number>
+    Example: -rankine-fahrenheit 10
+    '''
+    await bot.say(number - 459.67)
+
+@bot.command(name='rankine-centigrade',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def rankine_centigrade(ctx, number: int):
+    '''Convert Rankine to Centigrade
+    Usage: -rankine-centigrade <number>
+    Example: -rankine-centigrade 10
+    '''
+    await bot.say((number - 491.67) * (5/9))
+
+@bot.command(name='rankine-kelvin',pass_context=True)
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def rankine_kelvin(ctx, number: int):
+    '''Convert Rankine to Kelvin
+    Usage: -rankine-kelvin <number>
+    Example: -rankine-kelvin 10
+    '''
+    await bot.say(number * (5/9))
+
+#token
 bot.run(Secrets['Token'])
