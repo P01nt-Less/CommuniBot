@@ -684,20 +684,6 @@ async def poll(ctx,*, message: str):
     await bot.add_reaction(x, "🤷")
     await bot.add_reaction(x, "👎")
 
-@bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def embed(ctx,*, message: str):
-    '''Embed a piece of text.
-    Usage: -embed <text>
-    Example: -embed Potatoes!
-    '''
-    
-    embed = discord.Embed(color = ctx.message.author.color, timestamp = datetime.datetime.utcnow())
-    embed.set_author(name = f"{ctx.message.author}", icon_url = ctx.message.author.avatar_url)
-    embed.description = (message)
-    embed.set_footer(text = ctx.message.author.name)
-    await bot.say(embed=embed)
-
 @bot.command(pass_context=True, aliases=['tr'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def translate(ctx, tl, *words: str):
