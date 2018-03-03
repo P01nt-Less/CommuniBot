@@ -13,7 +13,7 @@ import json
 import time
 import asyncio
 import os
-import datetime
+from datetime import datetime
 from discord import game
 from random import randint
 from discord.ext import commands
