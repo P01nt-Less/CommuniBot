@@ -42,6 +42,26 @@ async def on_ready():
 async def on_command_error(error, ctx):
     if isinstance(error, commands.CommandOnCooldown):
       await bot.send_message(ctx.message.channel, "❌ | This command is on cooldown, try again later. (╯°□°）╯︵ ┻━┻")
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandNotFound):
+      await bot.send_message(ctx.message.channel, "❌ | This is not a command. Use -help for a list of commands. (╯°□°）╯︵ ┻━┻")
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.MissingRequiredArgument):
+      await bot.send_message(ctx.message.channel, "❌ | You are missing a required argument. (╯°□°）╯︵ ┻━┻")
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.TooManyArguments):
+      await bot.send_message(ctx.message.channel, "❌ | You have put too much arguments. (╯°□°）╯︵ ┻━┻")
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.NoPrivateMessage):
+      await bot.send_message(ctx.message.channel, "❌ | Sorry, this command isn't allowed to be used in private message. Go onto a server and use my commands there. (╯°□°）╯︵ ┻━┻")
 #commands
 #ping
 @bot.command(pass_context=True)
@@ -845,7 +865,7 @@ async def centigrade_fahrenheit(ctx, number: int):
     Usage: -centigrade-fahrenheit <number>
     Example: -centigrade-fahrenheit 10
     '''
-    await bot.say( (number * 1.8) + 32)
+    await bot.say(str((number * 1.8) + 32) + '°F')
 
 @bot.command(name='centigrade-kelvin',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -854,7 +874,7 @@ async def centigrade_kelvin(ctx, number: int):
     Usage: -centigrade-kelvin <number>
     Example: -centigrade-kelvin 10
     '''
-    await bot.say(number + 273.15)
+    await bot.say(str(number + 273.15) + '°K')
 
 @bot.command(name='centigrade-rankine',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -863,7 +883,7 @@ async def centigrade_rankine(ctx, number: int):
     Usage: -centigrade-rankine <number>
     Example: -centigrade-rankine 10
     '''
-    await bot.say((number + 273.15) * (9/5))
+    await bot.say(str((number + 273.15) * (9/5)) + '°R')
 
 @bot.command(name='fahrenheit-centigrade',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -872,7 +892,7 @@ async def fahrenheit_centigrade(ctx, number: int):
     Usage: -fahrenheit-centigrade <number>
     Example: -fahrenheit-centigrade 10
     '''
-    await bot.say((number - 32) / 1.8)
+    await bot.say(str((number - 32) / 1.8) + '°C')
 
 @bot.command(name='fahrenheit-kelvin',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -881,7 +901,7 @@ async def fahrenheit_kelvin(ctx, number: int):
     Usage: -fahrenheit-kelvin <number>
     Example: -fahrenheit-kelvin 10
     '''
-    await bot.say((number - 32) / 1.8)
+    await bot.say(str((number - 32) / 1.8) + '°K')
 
 @bot.command(name='fahrenheit-rankine',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -890,7 +910,7 @@ async def fahrenheit_rankine(ctx, number: int):
     Usage: -fahrenheit-rankine <number>
     Example: -fahrenheit-rankine 10
     '''
-    await bot.say(number + 459.67)
+    await bot.say(str(number + 459.67) + '°R')
 
 @bot.command(name='kelvin-fahrenheit',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -899,7 +919,7 @@ async def kelvin_fahrenheit(ctx, number: int):
     Usage: -kelvin-fahrenheit <number>
     Example: -kelvin-fahrenheit 10
     '''
-    await bot.say((number * (9/5)) - 459.67)
+    await bot.say(str((number * (9/5)) - 459.67) + '°F')
 
 @bot.command(name='kelvin-centigrade',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -908,7 +928,7 @@ async def kelvin_centigrade(ctx, number: int):
     Usage: -kelvin-Centigrade <number>
     Example: -kelvin-Centigrade 10
     '''
-    await bot.say(number - 273.15 )
+    await bot.say(str(number - 273.15 ) + '°C')
 
 @bot.command(name='kelvin-rankine',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -917,7 +937,7 @@ async def kelvin_rankine(ctx, number: int):
     Usage: -kelvin-rankine <number>
     Example: -kelvin-rankine 10
     '''
-    await bot.say(number * (9/5))
+    await bot.say(str(number * (9/5)) + '°R')
 
 @bot.command(name='rankine-fahrenheit',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -926,7 +946,7 @@ async def rankine_fahrenheit(ctx, number: int):
     Usage: -rankine-fahreneheit <number>
     Example: -rankine-fahrenheit 10
     '''
-    await bot.say(number - 459.67)
+    await bot.say(str(number - 459.67) + '°F')
 
 @bot.command(name='rankine-centigrade',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -935,7 +955,7 @@ async def rankine_centigrade(ctx, number: int):
     Usage: -rankine-centigrade <number>
     Example: -rankine-centigrade 10
     '''
-    await bot.say((number - 491.67) * (5/9))
+    await bot.say(str((number - 491.67) * (5/9)) + '°C')
 
 @bot.command(name='rankine-kelvin',pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -944,7 +964,7 @@ async def rankine_kelvin(ctx, number: int):
     Usage: -rankine-kelvin <number>
     Example: -rankine-kelvin 10
     '''
-    await bot.say(number * (5/9))
+    await bot.say(str(number * (5/9)) + '°K')
 
 #token
 bot.run(Secrets['Token'])
