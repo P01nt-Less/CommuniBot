@@ -38,30 +38,6 @@ async def on_ready():
 	print("Online.")
 	await bot.change_presence(game=discord.Game(name='on {} servers | -help.'.format(len(bot.servers))), status=discord.Status.online)
 
-@bot.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.CommandOnCooldown):
-      await bot.send_message(ctx.message.channel, "❌ | This command is on cooldown, try again later. (╯°□°）╯︵ ┻━┻")
-
-@bot.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.CommandNotFound):
-      await bot.send_message(ctx.message.channel, "❌ | This is not a command. Use -help for a list of commands. (╯°□°）╯︵ ┻━┻")
-
-@bot.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.MissingRequiredArgument):
-      await bot.send_message(ctx.message.channel, "❌ | You are missing a required argument. (╯°□°）╯︵ ┻━┻")
-
-@bot.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.TooManyArguments):
-      await bot.send_message(ctx.message.channel, "❌ | You have put too much arguments. (╯°□°）╯︵ ┻━┻")
-
-@bot.event
-async def on_command_error(error, ctx):
-    if isinstance(error, commands.NoPrivateMessage):
-      await bot.send_message(ctx.message.channel, "❌ | Sorry, this command isn't allowed to be used in private message. Go onto a server and use my commands there. (╯°□°）╯︵ ┻━┻")
 #commands
 #ping
 @bot.command(pass_context=True)
