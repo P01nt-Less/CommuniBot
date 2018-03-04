@@ -79,7 +79,7 @@ async def fun(ctx):
     Usage: -fun
     '''
     if ctx.invoked_subcommand is None:
-        embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.\n\n-memes\nRandomizes between lots of memes.', color=0x2874A6)
+        embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.\n\n-memes\nRandomizes between lots of memes.\n\n-piglatin\nTranslate your text into piglatin.', color=0x2874A6)
         await bot.say(embed=embed)
 @bot.command(pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
@@ -200,6 +200,22 @@ async def memes(ctx):
     memes_current_response = random.choice(memes_possible_responses)
     await bot.say(memes_current_response.format(ctx.message.author.mention))
 
+@bot.command(pass_context=True, aliases=['pl'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def piglatin(ctx,original: str):
+    pyg = 'ay'
+
+    if len(original) > 0 and original.isalpha():
+        word = original.lower()
+        first = word[0]
+        if first == ('a' or 'e' or 'i' or 'o' or 'u'):
+            new_word = word + pyg
+            await bot.say(new_word)
+        else:
+            new_word = word[1:] + first + pyg
+            await bot.say(new_word)
+    else:
+        await bot.say('You need to type something.')
 #info
 @bot.command(pass_context=True, aliases=['botinfo','information','botinformation','binfo','boti','binformation'])
 @commands.cooldown(1, 3, commands.BucketType.user)
