@@ -687,7 +687,7 @@ async def poll(ctx,*, message: str):
     Example: -poll Do you like CommuniBot?
     '''
     
-    embed = discord.Embed(color = ctx.message.author.color, timestamp = datetime.datetime.utcnow())
+    embed = discord.Embed(color = ctx.message.author.color, timestamp = datetime.utcnow())
     embed.set_author(name = "Poll", icon_url = ctx.message.author.avatar_url)
     embed.description = (message)
     embed.set_footer(text = ctx.message.author.name)
