@@ -38,7 +38,16 @@ async def on_ready():
 	print("Online.")
 	await bot.change_presence(game=discord.Game(name='on {} servers | -help.'.format(len(bot.servers))), status=discord.Status.online)
 
+
+#functions
+def owner(ctx):
+    return ctx.message.author.id == '276043503514025984'
 #commands
+#owner
+@bot.command(pass_context=True)
+@commands.check(owner)
+async def say(ctx, *, text: str = None):
+        await bot.say(text)
 #ping
 @bot.command(pass_context=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
