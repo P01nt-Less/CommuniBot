@@ -1,6 +1,4 @@
-#imports
-
-import discord
+import discord  #imports
 from random import shuffle
 import configparser
 import random
@@ -17,12 +15,10 @@ from datetime import datetime
 from discord import game
 from random import randint
 from discord.ext import commands
-
-#bot stuff
-bot_prefix = ':', '-', '@CommuniBot ', 'CommuniBot ', '@CommuniBot#4412 ', 'CommuniBot#4412', 'communibot'
+bot_prefix = (':', '-', '@CommuniBot ', 'CommuniBot ', '@CommuniBot#4412 ', 'CommuniBot#4412', 'communibot')
 bot = commands.Bot(command_prefix=bot_prefix)
 bot.remove_command('help')
-start_time = time.time()
+start_time = time.time()  #bot stuff
 starttime2 = time.ctime(int(time.time()))
 config = configparser.ConfigParser()
 config.sections()
@@ -31,941 +27,1086 @@ config.sections()
 Secrets = config['Secrets']
 
 
-#events   
 @bot.event
 async def on_ready():
-	bot.start_time = time.time()
-	print("Online.")
-	await bot.change_presence(game=discord.Game(name='on {} servers | -help.'.format(len(bot.servers))), status=discord.Status.online)
+    bot.start_time = time.time()
+    print('Online.')
+    await bot.change_presence(
+        activity=discord.Game(name='on {} servers | -help.'.format(len(bot.servers))), status=discord.Status.online)
+
+
+#events
+def owner(ctx):
+    return ctx.author.id == 276043503514025984
+
+
+@bot.command()
+@commands.check(owner)
+async def say(ctx, *, text: str = None):
+    await ctx.send(text)
 
 
 #functions
-def owner(ctx):
-    return ctx.message.author.id == '276043503514025984'
-#commands
-#owner
-@bot.command(pass_context=True)
-@commands.check(owner)
-async def say(ctx, *, text: str = None):
-        await bot.say(text)
-#ping
-@bot.command(pass_context=True)
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def ping(ctx):
-    '''Check how fast the bot responds.
-    Usage: -ping
-    '''
-    channel = ctx.message.channel
+async def ping(ctx):  #commands
+    'Check how fast the bot responds.\n    Usage: -ping\n    '  #owner
+    channel = ctx.channel
     t1 = time.perf_counter()
-    await bot.send_typing(channel)
+    await channel.trigger_typing()
     t2 = time.perf_counter()
-    embed=discord.Embed(description='Pong! {} milliseconds.'.format(round((t2-t1)*1000)), color=0x2874A6)
-    await bot.say(embed=embed)
+    embed = discord.Embed(description='Pong! {} milliseconds.'.format(round((t2 - t1) * 1000)), color=2651302)  #ping
+    await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def prefixes(ctx):
-    '''Check all of CommuniBot's prefixes.
-    Usage: -prefixes
-    '''
-    embed=discord.Embed(description='My prefix are: **-**, **:**,**@CommuniBot**, **CommuniBot**, **@CommuniBot#4412**, **CommuniBot#4412** and **communibot**.',color=0x2874A6)
-    await bot.say(embed=embed)
+    "Check all of CommuniBot's prefixes.\n    Usage: -prefixes\n    "
+    embed = discord.Embed(
+        description=
+        'My prefix are: **-**, **:**,**@CommuniBot**, **CommuniBot**, **@CommuniBot#4412**, **CommuniBot#4412** and **communibot**.',
+        color=2651302)
+    await ctx.send(embed=embed)
 
-#help
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def help(ctx):
-    '''See all of the commands from here.
-    Usage: -help
-    '''
-    embed=discord.Embed(description='Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.', color=0x2874A6)
-    await bot.say(embed=embed)
+    'See all of the commands from here.\n    Usage: -help\n    '
+    embed = discord.Embed(
+        description=
+        'Help\nPrefixes: -prefixes\n-ping - Shows the amount of milliseconds taken to respond.\n-info - Shows information about CommuniBot!\n-uptime - Shows the uptime status of CommuniBot!\n\n\n-jokes + \nShows a list of joke commands.\n\n-actions + \nShows a list of action commands.\n\n-moderation +\nShows a list of moderation commands.\n\n-fun +\nShows a list of fun commands.\n\n-server +\nLists commands about the server.\n\n-utilities +\nShows a list of commands about utilities.',
+        color=2651302)
+    await ctx.send(embed=embed)
 
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fun(ctx):
-    '''See all of the fun commands from here.
-    Usage: -fun
-    '''
+    'See all of the fun commands from here.\n    Usage: -fun\n    '
     if ctx.invoked_subcommand is None:
-        embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.\n\n-memes\nRandomizes between lots of memes.\n\n-piglatin\nTranslate your text into piglatin.', color=0x2874A6)
-        await bot.say(embed=embed)
-@bot.command(pass_context=True)
+        embed = discord.Embed(
+            description=
+            'Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.\n\n-memes\nRandomizes between lots of memes.\n\n-piglatin\nTranslate your text into piglatin.',
+            color=2651302)
+        await ctx.send(embed=embed)  #help
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx):
-    '''Flip a coin to either land on heads or tails.
-    Usage: -coinflip
-    '''
-    choice = random.choice(['Heads!','Tails!'])
-    await bot.say(choice)
-@bot.command(name="8ball", pass_context=True, aliases=['eightball'])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def _8ball(self, *, question : str):
-    '''Ask the bot a question and it will answer.
-    Usage: -8ball <text>?
-    Example: -8ball Is this question a question?
-    '''
-    responses = [["Signs point to yes.", "Yes.", "Without a doubt.", "As I see it, yes.", "You may rely on it.", "It is decidedly so.", "Yes - definitely.", "It is certain.", "Most likely.", "Outlook good."],
-    ["Reply hazy, try again.", "Concentrate and ask again.", "Better not tell you now.", "Cannot predict now.", "Ask again later."],
-    ["My sources say no.", "Outlook not so good.", "Very doubtful.", "My reply is no.", "Don't count on it."]]
-    if "?" in question:
-        await self.bot.say(":8ball:" + random.choice(random.choice(responses)))
-    else:
-        await self.bot.say("That doesn't look like a question. You need to put a question mark at the end of your sentence.")
+    'Flip a coin to either land on heads or tails.\n    Usage: -coinflip\n    '
+    choice = random.choice(['Heads!', 'Tails!'])
+    await ctx.send(choice)
 
-@bot.command(pass_context=True, no_pm=True)
+
+@bot.command(name='8ball', aliases=['eightball'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def _8ball(self, ctx, *, question: str):
+    'Ask the bot a question and it will answer.\n    Usage: -8ball <text>?\n    Example: -8ball Is this question a question?\n    '
+    responses = [[
+        'Signs point to yes.', 'Yes.', 'Without a doubt.', 'As I see it, yes.', 'You may rely on it.',
+        'It is decidedly so.', 'Yes - definitely.', 'It is certain.', 'Most likely.', 'Outlook good.'
+    ], [
+        'Reply hazy, try again.', 'Concentrate and ask again.', 'Better not tell you now.', 'Cannot predict now.',
+        'Ask again later.'
+    ], ['My sources say no.', 'Outlook not so good.', 'Very doubtful.', 'My reply is no.', "Don't count on it."]]
+    if '?' in question:
+        await ctx.send(':8ball:' + random.choice(random.choice(responses)))
+    else:
+        await ctx.send("That doesn't look like a question. You need to put a question mark at the end of your sentence."
+                       )
+
+
+@bot.command(no_pm=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def comic(ctx):
-    '''Check out a random comic.
-    Usage: -comic
-    '''
-    api = "https://xkcd.com/{}/info.0.json".format(random.randint(1, 1800))
+    'Check out a random comic.\n    Usage: -comic\n    '
+    api = 'https://xkcd.com/{}/info.0.json'.format(random.randint(1, 1800))
     async with aiohttp.ClientSession() as session:
         async with session.get(api) as r:
             response = await r.json()
-            embed = discord.Embed(title="Comic", description=response["title"], color=0xFF0000)
-            embed.set_image(url=response["img"])
-            await bot.say(embed=embed)
+            embed = discord.Embed(title='Comic', description=response['title'], color=16711680)
+            embed.set_image(url=response['img'])
+            await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def cat(ctx):
-    '''Check out a random cat.
-    Usage: -cat
-    '''
+    'Check out a random cat.\n    Usage: -cat\n    '
     api = 'https://random.cat/meow'
     async with aiohttp.ClientSession() as session:
         async with session.get(api) as r:
             if r.status == 200:
                 response = await r.json()
-                embed = discord.Embed(title="Cat", description="Here's your random cat image", color=0xFF0000)
-                embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
+                embed = discord.Embed(title='Cat', description="Here's your random cat image", color=16711680)
+                embed.set_author(name=f'''{ctx.author.display_name}''', icon_url=f'''{ctx.author.avatar_url}''')
                 embed.set_image(url=response['file'])
-                await bot.say(embed=embed)
+                await ctx.send(embed=embed)
             else:
-                await bot.say('Could not access random.cat API!')
+                await ctx.send('Could not access random.cat API!')
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def dog(ctx):
-    '''Check out a random dog.
-    Usage: -dog
-    '''
-    api = "https://api.thedogapi.co.uk/v2/dog.php"
+    'Check out a random dog.\n    Usage: -dog\n    '
+    api = 'https://api.thedogapi.co.uk/v2/dog.php'
     async with aiohttp.ClientSession() as session:
         async with session.get(api) as r:
             if r.status == 200:
                 response = await r.json()
-                embed = discord.Embed(title="Dog", description="Here's your random Dog", color=0xFF0000)
-                embed.set_author(name=f"{ctx.message.author.display_name}", icon_url=f"{ctx.message.author.avatar_url}")
-                embed.set_image(url=response['data'][0]["url"])
-                await bot.say(embed=embed)
+                embed = discord.Embed(title='Dog', description="Here's your random Dog", color=16711680)
+                embed.set_author(name=f'''{ctx.author.display_name}''', icon_url=f'''{ctx.author.avatar_url}''')
+                embed.set_image(url=response['data'][0]['url'])
+                await ctx.send(embed=embed)
             else:
-                x = "Could not find a dog :sad:!"
+                x = 'Could not find a dog :sad:!'
                 embed = discord.Embed(title='Error', color=colorfail)
                 embed.description = x
-                await bot.say(embed=embed)
+                await ctx.send(embed=embed)
 
-@bot.command(name='choose', aliases=['select','choice'],pass_context=True)
+
+@bot.command(name='choose', aliases=['select', 'choice'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def choose(self, ctx, *args):
-    '''Make the bot choose over two or more things.
-    Usage: -choose <one> <two> <three> <etc>
-    Example: -choose Potatoes Tomatoes Unicorns Carrots
-    '''
+    'Make the bot choose over two or more things.\n    Usage: -choose <one> <two> <three> <etc>\n    Example: -choose Potatoes Tomatoes Unicorns Carrots\n    '
     choice = random.choice(args)
-    await bot.say(f'**`{choice}`**')
+    await ctx.send(f'''**`{choice}`**''')
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def roll(ctx, number: int=100):
-    '''Rolls a random number. If no number is put in, it will choose 100. It must be higher than one.
-    Usage: -roll <number>
-    Example: -roll 1242
-    '''
+async def roll(ctx, number: int = 100):
+    'Rolls a random number. If no number is put in, it will choose 100. It must be higher than one.\n    Usage: -roll <number>\n    Example: -roll 1242\n    '
     if number > 1:
-        await bot.say(f"{ctx.message.author.mention} | :game_die: {randint(1, number)}")
+        await ctx.send(f'''{ctx.author.mention} | :game_die: {randint(1, number)}''')
     else:
-        await bot.say(f"{ctx.message.author.mention} Please insert a number higher than one.")
+        await ctx.send(f'''{ctx.author.mention} Please insert a number higher than one.''')
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def roast(ctx, person: discord.Member):
-    '''Roast someone.
-    Usage: -roast <@person>
-    Example: -roast @Pointless
-    '''
-    roast_possible_responses = ["{}, your ass must be pretty jealous of all the shit that comes out of your mouth.","{}, some day you'll go far, and I hope you stay there.","{}, I'm trying my absolute hardest to see things from your perspective, but I just can't get my head that far up my ass.","{}, I'm not a protocolgist, but I know an asshole when I see one.","{}, Do yourself a favor and ignore anyone who tels you to be yourself. Bad idea in your case.","{}, Everyone's entitled to act stupid once in awhile, but you really abuse the privilege.","{}, Can you die of constipation? I ask because I'm worried about how full of shit you are.","{}, Sorry, I didn't get that. I don't speak bullshit.","{}, There are some remarkably dumb people in this world. Thanks for helping me understand that.","{}, I could eat a bowl of alphabet soup and shit out a smarter statement than whatever you just said.","{}, You always bring me so much joy, as soon as you leave the room.","{}, I'd tell you how I really feel, but I wasn't born with enough middle fingers to express myself in this case.","{}, You have the right to remain silent because whatever you say will probably be stupid anyway.","{}, your family tree must be a cactuss because you're all a bunch of pricks.","{}, You'll never be the man your mom is.","{}, If laughter is the best medicine, your face must be curing the world.","{}, scientists say the universe is made up of neutrons, protons and electrons. They forgot to mention morons, as you are one.","{}, if you really want to know about mistakes, you should ask your parents.","{}, I thought of you today. It reminded me to take the garbage out.","{}, you're such a beautiful, intelligent, wonderful person. Oh I'm sorry, I thought we were having a lying competition.","{}, I may love to shop but I'm not buying your bullshit.","{}, I just stepped in something that was smarter than you, and smelled better too."]
+    'Roast someone.\n    Usage: -roast <@person>\n    Example: -roast @Pointless\n    '
+    roast_possible_responses = [
+        '{}, your ass must be pretty jealous of all the shit that comes out of your mouth.',
+        "{}, some day you'll go far, and I hope you stay there.",
+        "{}, I'm trying my absolute hardest to see things from your perspective, but I just can't get my head that far up my ass.",
+        "{}, I'm not a protocolgist, but I know an asshole when I see one.",
+        '{}, Do yourself a favor and ignore anyone who tels you to be yourself. Bad idea in your case.',
+        "{}, Everyone's entitled to act stupid once in awhile, but you really abuse the privilege.",
+        "{}, Can you die of constipation? I ask because I'm worried about how full of shit you are.",
+        "{}, Sorry, I didn't get that. I don't speak bullshit.",
+        '{}, There are some remarkably dumb people in this world. Thanks for helping me understand that.',
+        '{}, I could eat a bowl of alphabet soup and shit out a smarter statement than whatever you just said.',
+        '{}, You always bring me so much joy, as soon as you leave the room.',
+        "{}, I'd tell you how I really feel, but I wasn't born with enough middle fingers to express myself in this case.",
+        '{}, You have the right to remain silent because whatever you say will probably be stupid anyway.',
+        "{}, your family tree must be a cactuss because you're all a bunch of pricks.",
+        "{}, You'll never be the man your mom is.",
+        '{}, If laughter is the best medicine, your face must be curing the world.',
+        '{}, scientists say the universe is made up of neutrons, protons and electrons. They forgot to mention morons, as you are one.',
+        '{}, if you really want to know about mistakes, you should ask your parents.',
+        '{}, I thought of you today. It reminded me to take the garbage out.',
+        "{}, you're such a beautiful, intelligent, wonderful person. Oh I'm sorry, I thought we were having a lying competition.",
+        "{}, I may love to shop but I'm not buying your bullshit.",
+        '{}, I just stepped in something that was smarter than you, and smelled better too.'
+    ]
     roast_current_response = random.choice(roast_possible_responses)
-    await bot.say(roast_current_response.format(person.mention))
+    await ctx.send(roast_current_response.format(person.mention))
 
-@bot.command(pass_context=True, aliases=['meme'])
+
+@bot.command(aliases=['meme'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx):
-    '''Randomizes between lots of memes
-    Usage: -memes
-    '''
-    memes_possible_responses = ['{} https://upload.wikimedia.org/wikipedia/commons/a/ab/Lolcat_in_folder.jpg','{} https://upload.wikimedia.org/wikipedia/commons/1/1a/Cat_crying_%28Lolcat%29.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/284/242/202.jpg','{} https://i.ytimg.com/vi/6HA2D3LsJQs/hqdefault.jpg','{} http://www.lolcats.com/images/u/11/43/lolcatsdotcomsyucc7vghgeu3ygu.jpg','{} https://shesaid.com/wp-content/uploads/2016/09/7Ak9p.jpg','{} https://i.ytimg.com/vi/Bkco3bE2tg8/hqdefault.jpg','{} https://vignette.wikia.nocookie.net/epicrapbattlesofhistory/images/1/15/LOLCATS-Cloud.jpeg/revision/latest?cb=20140723224315','{} https://i.chzbgr.com/full/9089826560/h07C1DAA9/','{} https://media.mnn.com/assets/images/2012/11/lolcat_main_0.jpg','{} https://i.pinimg.com/736x/aa/3c/0f/aa3c0f3dd59210f9953a5c1c0d46c2d6--funny-pets-funny-animals.jpg','{} https://img.scoop.it/NhznTvgS8CGETQOQgXJ3DDl72eJkfbmt4t8yenImKBVvK0kTmF0xjctABnaLJIm9','{} https://www.oddee.com/wp-content/uploads/_media/imgs/articles2/a97873_rsz_drunkdial.jpg','{} https://i.chzbgr.com/full/9107324928/h0A65249F/','{} https://i.ytimg.com/vi/IaK6EUSUG4I/hqdefault.jpg','{} https://blogs.loc.gov/digitalpreservation/files/2014/07/864385794_40eef8f22b_z1.jpg','{} https://i.chzbgr.com/full/9101861888/h2C7008DC/','{} http://i0.kym-cdn.com/photos/images/facebook/001/031/948/10b.jpg','{} http://i0.kym-cdn.com/photos/images/facebook/000/559/061/d94.png','{} https://pics.me.me/my-cat-made-this-face-when-i-meowed-back-at-8561541.png','{} http://www.lolcats.com/images/u/12/43/lolcatsdotcomnapkin.jpg','{} https://longlivethekitty.com/wp-content/uploads/lolcat_airplane.jpg','{} http://www.lolcats.com/images/u/08/39/lolcatsdotcomly2r5yakozqlbhmn.jpg','{} http://firstmonday.org/ojs/index.php/fm/article/viewFile/5391/4103/40381','{} https://bighugelabs.com/img/lolcat-sample.jpg','{} http://static.wixstatic.com/media/8e31f964a29559e19acfb44ea027ab0c.wix_mp_1024','{} http://www.rationalitynow.com/blog/wp-content/uploads/2009/12/owlcatl.jpg','{} http://i0.kym-cdn.com/photos/images/facebook/000/519/843/833.jpg','{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/wrong-answer-you-aint-cheat.jpg','{} http://i.imgur.com/yYT55QA.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/914/6b4.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/209/916/fe7.jpg','{} https://i.imgur.com/XuFg46x.jpg','{} https://i.imgur.com/vlA7u5k.jpg','{} https://stepcdn.com/assets/2017-02/03/11/8e3r2/trump-twitter-700x.jpg','{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/adding-salt-to-your-drama.jpg','{} http://i0.kym-cdn.com/photos/images/original/001/211/181/422.jpg','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-im-missing-the-25131584.png','{} https://pics.me.me/when-you-use-furthermore-in-your-essay-sprinkle-dat-extra-16049743.png','{} https://ecdn.teacherspayteachers.com/thumbitem/-Salt-Bae-Meme-Writing-Freebie-2978990-1485278672/original-2978990-1.jpg','{} https://pics.me.me/when-black-parents-add-an-apostrophe-to-their-childs-name-11763958.png','{} http://i0.kym-cdn.com/photos/images/facebook/001/209/136/1ef.png','{} https://pics.me.me/your-head-salt-bae-who-won-the-meme-battle-for-13363207.png','http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/Caucasian-on-your-cv.jpg','{} https://lh3.googleusercontent.com/vnCrrk7gvVIoLQsV4HnLiabPXqKA7ls86cm-2Snuk-B9NOup-OtblK8UXYdo3qhBIk7SqtOTUEVpIOMnYmAzJ_H1jKIsJ8ElWPipvAkUthqAxhtwG1ar3ANnuFdC5pTbeNrqb8Q-','{} https://pics.me.me/cheating-lies-deceit-ent-unfaithful-god-when-he-was-creating-11587232.png','{} https://pics.me.me/mexico-autodeciaraodny-autobusas-rapid-a-pre-playas-de-tijuana-ropuerto-11675269.png','{} https://pics.me.me/thedukeofmeines-edukeof-memes-saltbae-911-jetfeul-steelbeams-twintowers-bush-proof-12396857.png','{} https://static.boredpanda.com/blog/wp-content/uploads/2017/01/818286176889085952-png__700.jpg','{} https://i.imgflip.com/vgh66.jpg','{} http://s2.quickmeme.com/img/b0/b0039e31a5f5ff0fbf9336d47e5d3ec2a80232f3e31e10883c15dbc66be3809d.jpg','{} http://weknowmemes.com/generator/uploads/generated/g1365444091774137766.jpg','{} https://i.chzbgr.com/original/1738866432/hC0106396/','{} http://www.imagefully.com/wp-content/uploads/2015/08/I-Dunno-Lol-Dog-Image.jpg','{} http://images4.fanpop.com/image/photos/15900000/lol-dogs-dogs-15905734-500-375.jpg','{} http://4.bp.blogspot.com/-Rny6ymoavqs/UAhodFDkDPI/AAAAAAAAsiU/8nUf9LUjGyw/s1600/funny-dog-pictures-there-there-ugly-bald-puppy.jpg','{} http://images6.fanpop.com/image/photos/37300000/Funny-Dogs-dogs-37339100-421-428.jpg','{} https://ilifejourney.files.wordpress.com/2012/10/dog-and-spiders.jpg','{} https://i1.wp.com/thefunniestpictures.com/wp-content/uploads/2014/08/Funny-Dog-1.jpg?fit=499%2C334&ssl=1','{} https://ci.memecdn.com/722962.jpg','{} https://collarfolk.com/wp-content/uploads/2017/05/8963bb3fdd1f319b0154cc646a0de37a.jpg','{} https://memegenerator.net/img/instances/500x/64586542/oh-por-deus.jpg','{} https://imgfave.azureedge.net/image_cache/1383619315754765.jpg','{} https://www.seabreeze.com.au/Img/Photos/Other/3722545.jpg','{} http://blogs.discovermagazine.com/discoblog/files/2012/10/dog_meme.jpeg','{} https://static.fjcdn.com/pictures/Lol_98ff89_2584253.jpg','{} http://i0.kym-cdn.com/photos/images/facebook/000/151/934/imade40cakes128548225192353750.jpg','{} http://s2.quickmeme.com/img/a7/a70f44decdb833e94ed530c63cce6775182c03a2f8d5f8301114b52f9724ce80.jpg','{} http://funnyanimalphoto.com/wp-content/uploads/2013/10/dog_loves_bacon.jpg?bd03d3','{} http://s2.quickmeme.com/img/fc/fc02f94bf37ff24f18337ac7de31631ef2b35296e87409184aef259c94f53d1d.jpg','{} https://i.imgur.com/u7mM6mE.jpg', '{} https://i.pinimg.com/736x/71/27/71/712771dd7c68cb9c3ccccc69a9f2e953--bit.jpg','{} https://cdn.discordapp.com/attachments/393566779269709824/396739756437929984/doggie.gif\nCredit to @Windfave#5304.']
+    'Randomizes between lots of memes\n    Usage: -memes\n    '
+    memes_possible_responses = [
+        '{} https://upload.wikimedia.org/wikipedia/commons/a/ab/Lolcat_in_folder.jpg',
+        '{} https://upload.wikimedia.org/wikipedia/commons/1/1a/Cat_crying_%28Lolcat%29.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/original/001/284/242/202.jpg',
+        '{} https://i.ytimg.com/vi/6HA2D3LsJQs/hqdefault.jpg',
+        '{} http://www.lolcats.com/images/u/11/43/lolcatsdotcomsyucc7vghgeu3ygu.jpg',
+        '{} https://shesaid.com/wp-content/uploads/2016/09/7Ak9p.jpg',
+        '{} https://i.ytimg.com/vi/Bkco3bE2tg8/hqdefault.jpg',
+        '{} https://vignette.wikia.nocookie.net/epicrapbattlesofhistory/images/1/15/LOLCATS-Cloud.jpeg/revision/latest?cb=20140723224315',
+        '{} https://i.chzbgr.com/full/9089826560/h07C1DAA9/',
+        '{} https://media.mnn.com/assets/images/2012/11/lolcat_main_0.jpg',
+        '{} https://i.pinimg.com/736x/aa/3c/0f/aa3c0f3dd59210f9953a5c1c0d46c2d6--funny-pets-funny-animals.jpg',
+        '{} https://img.scoop.it/NhznTvgS8CGETQOQgXJ3DDl72eJkfbmt4t8yenImKBVvK0kTmF0xjctABnaLJIm9',
+        '{} https://www.oddee.com/wp-content/uploads/_media/imgs/articles2/a97873_rsz_drunkdial.jpg',
+        '{} https://i.chzbgr.com/full/9107324928/h0A65249F/', '{} https://i.ytimg.com/vi/IaK6EUSUG4I/hqdefault.jpg',
+        '{} https://blogs.loc.gov/digitalpreservation/files/2014/07/864385794_40eef8f22b_z1.jpg',
+        '{} https://i.chzbgr.com/full/9101861888/h2C7008DC/',
+        '{} http://i0.kym-cdn.com/photos/images/facebook/001/031/948/10b.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/facebook/000/559/061/d94.png',
+        '{} https://pics.me.me/my-cat-made-this-face-when-i-meowed-back-at-8561541.png',
+        '{} http://www.lolcats.com/images/u/12/43/lolcatsdotcomnapkin.jpg',
+        '{} https://longlivethekitty.com/wp-content/uploads/lolcat_airplane.jpg',
+        '{} http://www.lolcats.com/images/u/08/39/lolcatsdotcomly2r5yakozqlbhmn.jpg',
+        '{} http://firstmonday.org/ojs/index.php/fm/article/viewFile/5391/4103/40381',
+        '{} https://bighugelabs.com/img/lolcat-sample.jpg',
+        '{} http://static.wixstatic.com/media/8e31f964a29559e19acfb44ea027ab0c.wix_mp_1024',
+        '{} http://www.rationalitynow.com/blog/wp-content/uploads/2009/12/owlcatl.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/facebook/000/519/843/833.jpg',
+        '{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/wrong-answer-you-aint-cheat.jpg',
+        '{} http://i.imgur.com/yYT55QA.jpg', '{} http://i0.kym-cdn.com/photos/images/original/001/209/914/6b4.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/original/001/209/916/fe7.jpg', '{} https://i.imgur.com/XuFg46x.jpg',
+        '{} https://i.imgur.com/vlA7u5k.jpg',
+        '{} https://stepcdn.com/assets/2017-02/03/11/8e3r2/trump-twitter-700x.jpg',
+        '{} http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/adding-salt-to-your-drama.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/original/001/211/181/422.jpg',
+        '{} https://pics.me.me/when-you-use-furthermore-in-your-essay-im-missing-the-25131584.png',
+        '{} https://pics.me.me/when-you-use-furthermore-in-your-essay-sprinkle-dat-extra-16049743.png',
+        '{} https://ecdn.teacherspayteachers.com/thumbitem/-Salt-Bae-Meme-Writing-Freebie-2978990-1485278672/original-2978990-1.jpg',
+        '{} https://pics.me.me/when-black-parents-add-an-apostrophe-to-their-childs-name-11763958.png',
+        '{} http://i0.kym-cdn.com/photos/images/facebook/001/209/136/1ef.png',
+        '{} https://pics.me.me/your-head-salt-bae-who-won-the-meme-battle-for-13363207.png',
+        'http://runt-of-the-web.com/wordpress/wp-content/uploads/2017/01/Caucasian-on-your-cv.jpg',
+        '{} https://lh3.googleusercontent.com/vnCrrk7gvVIoLQsV4HnLiabPXqKA7ls86cm-2Snuk-B9NOup-OtblK8UXYdo3qhBIk7SqtOTUEVpIOMnYmAzJ_H1jKIsJ8ElWPipvAkUthqAxhtwG1ar3ANnuFdC5pTbeNrqb8Q-',
+        '{} https://pics.me.me/cheating-lies-deceit-ent-unfaithful-god-when-he-was-creating-11587232.png',
+        '{} https://pics.me.me/mexico-autodeciaraodny-autobusas-rapid-a-pre-playas-de-tijuana-ropuerto-11675269.png',
+        '{} https://pics.me.me/thedukeofmeines-edukeof-memes-saltbae-911-jetfeul-steelbeams-twintowers-bush-proof-12396857.png',
+        '{} https://static.boredpanda.com/blog/wp-content/uploads/2017/01/818286176889085952-png__700.jpg',
+        '{} https://i.imgflip.com/vgh66.jpg',
+        '{} http://s2.quickmeme.com/img/b0/b0039e31a5f5ff0fbf9336d47e5d3ec2a80232f3e31e10883c15dbc66be3809d.jpg',
+        '{} http://weknowmemes.com/generator/uploads/generated/g1365444091774137766.jpg',
+        '{} https://i.chzbgr.com/original/1738866432/hC0106396/',
+        '{} http://www.imagefully.com/wp-content/uploads/2015/08/I-Dunno-Lol-Dog-Image.jpg',
+        '{} http://images4.fanpop.com/image/photos/15900000/lol-dogs-dogs-15905734-500-375.jpg',
+        '{} http://4.bp.blogspot.com/-Rny6ymoavqs/UAhodFDkDPI/AAAAAAAAsiU/8nUf9LUjGyw/s1600/funny-dog-pictures-there-there-ugly-bald-puppy.jpg',
+        '{} http://images6.fanpop.com/image/photos/37300000/Funny-Dogs-dogs-37339100-421-428.jpg',
+        '{} https://ilifejourney.files.wordpress.com/2012/10/dog-and-spiders.jpg',
+        '{} https://i1.wp.com/thefunniestpictures.com/wp-content/uploads/2014/08/Funny-Dog-1.jpg?fit=499%2C334&ssl=1',
+        '{} https://ci.memecdn.com/722962.jpg',
+        '{} https://collarfolk.com/wp-content/uploads/2017/05/8963bb3fdd1f319b0154cc646a0de37a.jpg',
+        '{} https://memegenerator.net/img/instances/500x/64586542/oh-por-deus.jpg',
+        '{} https://imgfave.azureedge.net/image_cache/1383619315754765.jpg',
+        '{} https://www.seabreeze.com.au/Img/Photos/Other/3722545.jpg',
+        '{} http://blogs.discovermagazine.com/discoblog/files/2012/10/dog_meme.jpeg',
+        '{} https://static.fjcdn.com/pictures/Lol_98ff89_2584253.jpg',
+        '{} http://i0.kym-cdn.com/photos/images/facebook/000/151/934/imade40cakes128548225192353750.jpg',
+        '{} http://s2.quickmeme.com/img/a7/a70f44decdb833e94ed530c63cce6775182c03a2f8d5f8301114b52f9724ce80.jpg',
+        '{} http://funnyanimalphoto.com/wp-content/uploads/2013/10/dog_loves_bacon.jpg?bd03d3',
+        '{} http://s2.quickmeme.com/img/fc/fc02f94bf37ff24f18337ac7de31631ef2b35296e87409184aef259c94f53d1d.jpg',
+        '{} https://i.imgur.com/u7mM6mE.jpg',
+        '{} https://i.pinimg.com/736x/71/27/71/712771dd7c68cb9c3ccccc69a9f2e953--bit.jpg',
+        '{} https://cdn.discordapp.com/attachments/393566779269709824/396739756437929984/doggie.gif\nCredit to @Windfave#5304.'
+    ]
     memes_current_response = random.choice(memes_possible_responses)
-    await bot.say(memes_current_response.format(ctx.message.author.mention))
+    await ctx.send(memes_current_response.format(ctx.author.mention))
 
-@bot.command(pass_context=True, aliases=['pl'])
+
+@bot.command(aliases=['pl'])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def piglatin(ctx,original: str):
+async def piglatin(ctx, original: str):
     pyg = 'ay'
-
-    if len(original) > 0 and original.isalpha():
+    if (len(original) > 0) and original.isalpha():
         word = original.lower()
         first = word[0]
         if first == ('a' or 'e' or 'i' or 'o' or 'u'):
             new_word = word + pyg
-            await bot.say(new_word)
+            await ctx.send(new_word)
         else:
-            new_word = word[1:] + first + pyg
-            await bot.say(new_word)
+            new_word = (word[1:] + first) + pyg
+            await ctx.send(new_word)
     else:
-        await bot.say('You need to type something.')
-#info
-@bot.command(pass_context=True, aliases=['botinfo','information','botinformation','binfo','boti','binformation'])
+        await ctx.send('You need to type something.')
+
+
+@bot.command(aliases=['botinfo', 'information', 'botinformation', 'binfo', 'boti', 'binformation'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def info(ctx):
-    '''Tells you information about the bot.
-    Usage: -info
-    '''
-    member = ctx.message.author
+    'Tells you information about the bot.\n    Usage: -info\n    '
+    member = ctx.author
     second = time.time() - start_time
-    minute, second = divmod(second, 60)
-    hour, minute = divmod(minute, 60)
-    day, hour = divmod(hour, 24)
-    week, day = divmod(day, 7)
+    (minute, second) = divmod(second, 60)
+    (hour, minute) = divmod(minute, 60)
+    (day, hour) = divmod(hour, 24)
+    (week, day) = divmod(day, 7)
+    join = discord.Embed(description='', title='Information about CommuniBot', colour=65535)
+    join.add_field(
+        name='__Information__',
+        value=
+        f'''This bot was made in discord.py and was created by <@276043503514025984> (Pointless). It is for a bot that has moderation, fun commands, memes and more. It aims to make communities get less bots in total, so it doesn't look like there's too much bots in the Member list.''',
+        inline=True)
+    join.add_field(
+        name='__Creator__',
+        value=
+        f'''<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.''',
+        inline=True)
+    join.add_field(
+        name='__Helped__', value=f'''<@338600456383234058> - Created -say, -poll and -embed command.''', inline=True)
+    join.add_field(
+        name='__Status__',
+        value=(f'''Uptime: I've been online for %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s)!''' %
+               (week, day, hour, minute, second)) + '\nTotal Servers: {} servers.'.format(len(bot.servers)),
+        inline=True)
+    join.add_field(
+        name='__Links__',
+        value=
+        f'''Invite link for the bot: https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591
+Invite link for the support server: https://discord.gg/Fz2pKVE
+Link for Discord Bots: https://discordbots.org/bot/406890237604790302
+Link for Github page: https://github.com/P01nt-Less/CommuniBot
+Link for Reddit page: https://www.reddit.com/r/The_Community/''',
+        inline=True)
+    return await ctx.send(embed=join)
+    await ctx.send(embed=embed)
 
-    join = discord.Embed(description= '',title = 'Information about CommuniBot', colour = 0xFFFF);
-    join.add_field(name = '__Information__', value = f"This bot was made in discord.py and was created by <@276043503514025984> (Pointless). It is for a bot that has moderation, fun commands, memes and more. It aims to make communities get less bots in total, so it doesn't look like there's too much bots in the Member list.", inline=True);
-    join.add_field(name = '__Creator__', value = f"<@276043503514025984> - Created the the bot and all the commands, except for the ones who created some.", inline=True);
-    join.add_field(name = '__Helped__', value = f"<@338600456383234058> - Created -say, -poll and -embed command.", inline=True)
-    join.add_field(name = '__Status__', value = f"Uptime: I've been online for %d week(s), %d day(s), %d hour(s), %d minute(s), %d second(s)!" % (week, day, hour, minute, second) + "\nTotal Servers: {} servers.".format(len(bot.servers)), inline=True)
-    join.add_field(name = '__Links__', value = f"Invite link for the bot: https://discordapp.com/oauth2/authorize?client_id=406890237604790302&scope=bot&permissions=2146958591\nInvite link for the support server: https://discord.gg/Fz2pKVE\nLink for Discord Bots: https://discordbots.org/bot/406890237604790302\nLink for Github page: https://github.com/P01nt-Less/CommuniBot\nLink for Reddit page: https://www.reddit.com/r/The_Community/", inline=True)
 
-    return await bot.say(embed = join);
-    await bot.say(embed=embed)
-
-#actions
-@bot.group(pass_context=True)
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def actions(ctx):
-    '''Shows the action commands.
-    Usage: -action
-    '''
+    'Shows the action commands.\n    Usage: -action\n    '
     if ctx.invoked_subcommand is None:
-        embed=discord.Embed(description='Action commands\n\n\n-punch\nPunches someone you\'d like to do that to.\n\n-legkick\nKicks anyone you like.\n\n-hug\nHugs anyone you like.\n\n-kiss\nKiss anyone you like.\n\n-uppercut\nUppercut anybody you like.\n\n-wave\nWave at anyone you\'d like to.\n\n-smile\nJust smile.\n\n-frown\nFrown. :(\n\n-slap\nSlap anyone you like.\n\n-stab\nStab people! Muehehehe!\n\n-murder\nMurder someone...\n\n-shoot\nShoot a person! Dun dun dunn!!', color=0x2874A6)
-        await bot.say(embed=embed)
+        embed = discord.Embed(
+            description=
+            "Action commands\n\n\n-punch\nPunches someone you'd like to do that to.\n\n-legkick\nKicks anyone you like.\n\n-hug\nHugs anyone you like.\n\n-kiss\nKiss anyone you like.\n\n-uppercut\nUppercut anybody you like.\n\n-wave\nWave at anyone you'd like to.\n\n-smile\nJust smile.\n\n-frown\nFrown. :(\n\n-slap\nSlap anyone you like.\n\n-stab\nStab people! Muehehehe!\n\n-murder\nMurder someone...\n\n-shoot\nShoot a person! Dun dun dunn!!",
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def punch(ctx, person: discord.Member): 
-    '''Punch someone.
-    Usage: -punch <@person>
-    Example: -punch @Pointless
-    '''
-    punch_possible_responses = ["{} punched {} in the face, in the face."]
+async def punch(ctx, person: discord.Member):
+    'Punch someone.\n    Usage: -punch <@person>\n    Example: -punch @Pointless\n    '
+    punch_possible_responses = ['{} punched {} in the face, in the face.']
     punch_current_response = random.choice(punch_possible_responses)
-    await bot.say(punch_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+    await ctx.send(punch_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
+@commands.cooldown(1, 3, commands.BucketType.user)  #info
 async def legkick(ctx, person: discord.Member):
-    '''Kick someone.
-    Usage: -legkick <@person>
-    Example: -legkick @Pointless
-    '''
-    kick_possible_responses = ["{} kicked {} in the leg."]
+    'Kick someone.\n    Usage: -legkick <@person>\n    Example: -legkick @Pointless\n    '
+    kick_possible_responses = ['{} kicked {} in the leg.']
     kick_current_response = random.choice(kick_possible_responses)
-    await bot.say(kick_current_response.format(ctx.message.author.mention, person.mention))	
-@bot.command(pass_context=True)
+    await ctx.send(kick_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def hug(ctx, person: discord.Member):
-    '''Hug someone.
-    Usage: -hug <@person>
-    Example: -hug @Pointless
-    '''
-    hug_possible_responses = ["{} hugged {} tightly."]
+    'Hug someone.\n    Usage: -hug <@person>\n    Example: -hug @Pointless\n    '
+    hug_possible_responses = ['{} hugged {} tightly.']
     hug_current_response = random.choice(hug_possible_responses)
-    await bot.say(hug_current_response.format(ctx.message.author.mention, person.mention))	
-@bot.command(pass_context=True)
+    await ctx.send(hug_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kiss(ctx, person: discord.Member):
-    '''Kiss someone.
-    Usage: -kiss <@person>
-    Example: -kiss @Pointless
-    '''
-    kiss_possible_responses = ["{} kissed {} on the cheek."]
+    'Kiss someone.\n    Usage: -kiss <@person>\n    Example: -kiss @Pointless\n    '
+    kiss_possible_responses = ['{} kissed {} on the cheek.']
     kiss_current_response = random.choice(kiss_possible_responses)
-    await bot.say(kiss_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+    await ctx.send(kiss_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
+@commands.cooldown(1, 3, commands.BucketType.user)  #actions
 async def uppercut(ctx, person: discord.Member):
-    '''Uppercut someone.
-    Usage: -uppercut <@person>
-    Example: -uppercut @Pointless
-    '''
-    uppercut_possible_responses = ["{} uppercut {} and turned {} into a giraffe."]
+    'Uppercut someone.\n    Usage: -uppercut <@person>\n    Example: -uppercut @Pointless\n    '
+    uppercut_possible_responses = ['{} uppercut {} and turned {} into a giraffe.']
     uppercut_current_response = random.choice(uppercut_possible_responses)
-    await bot.say(uppercut_current_response.format(ctx.message.author.mention, person.mention, person.mention))
-@bot.command(pass_context=True)
+    await ctx.send(uppercut_current_response.format(ctx.author.mention, person.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def wave(ctx, person: discord.Member):
-    '''Wave at someone.
-    Usage: -wave <@person>
-    Example: -wave @Pointless
-    '''
-    uppercut_possible_responses = ["{} waved at {} with a smile on their face."]
+    'Wave at someone.\n    Usage: -wave <@person>\n    Example: -wave @Pointless\n    '
+    uppercut_possible_responses = ['{} waved at {} with a smile on their face.']
     uppercut_current_response = random.choice(uppercut_possible_responses)
-    await bot.say(uppercut_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
+    await ctx.send(uppercut_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def smile(ctx):
-    '''Just smile.
-    Usage: -smile
-    '''
-    smile_possible_responses = ["{} smiled."]
+    'Just smile.\n    Usage: -smile\n    '
+    smile_possible_responses = ['{} smiled.']
     smile_current_response = random.choice(smile_possible_responses)
-    await bot.say(smile_current_response.format(ctx.message.author.mention))
-@bot.command(pass_context=True)
+    await ctx.send(smile_current_response.format(ctx.author.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def frown(ctx):
-    '''Just frown.
-    Usage: -frown
-    '''
-    punch_possible_responses = ["{} frowned."]
+    'Just frown.\n    Usage: -frown\n    '
+    punch_possible_responses = ['{} frowned.']
     punch_current_response = random.choice(punch_possible_responses)
-    await bot.say(punch_current_response.format(ctx.message.author.mention))
-@bot.command(pass_context=True)
+    await ctx.send(punch_current_response.format(ctx.author.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def slap(ctx, person: discord.Member):
-    '''Slap someone.
-    Usage: -slap <@person>
-    Example: -slap @Pointless
-    '''
+    'Slap someone.\n    Usage: -slap <@person>\n    Example: -slap @Pointless\n    '
     slap_possible_responses = ["{} slapped {}'s face making it red. "]
     slap_current_response = random.choice(slap_possible_responses)
-    await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
+    await ctx.send(slap_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def stab(ctx, person: discord.Member):
-    '''Stab someone.
-    Usage: -stab <@person>
-    Example: -stab @Pointless
-    '''
-    slap_possible_responses = ["{} stabbed {} in the heart making his last feeling pain."]
+    'Stab someone.\n    Usage: -stab <@person>\n    Example: -stab @Pointless\n    '
+    slap_possible_responses = ['{} stabbed {} in the heart making his last feeling pain.']
     slap_current_response = random.choice(slap_possible_responses)
-    await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
+    await ctx.send(slap_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def murder(ctx, person: discord.Member):
-    '''Murder someone.
-    Usage: -murder <@person>
-    Example: -murder @Pointless
-    '''
-    slap_possible_responses = ["{} murdered {} with no one knowing anything that happened."]
+    'Murder someone.\n    Usage: -murder <@person>\n    Example: -murder @Pointless\n    '
+    slap_possible_responses = ['{} murdered {} with no one knowing anything that happened.']
     slap_current_response = random.choice(slap_possible_responses)
-    await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
-@bot.command(pass_context=True)
+    await ctx.send(slap_current_response.format(ctx.author.mention, person.mention))
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def shoot(ctx, person: discord.Member):
-    '''Shoot someone.
-    Usage: -shoot <@person>
-    Example: -shoot @Pointless
-    '''
-    slap_possible_responses = ["{} shot {} straight in the head making them collapse onto the floor."]
+    'Shoot someone.\n    Usage: -shoot <@person>\n    Example: -shoot @Pointless\n    '
+    slap_possible_responses = ['{} shot {} straight in the head making them collapse onto the floor.']
     slap_current_response = random.choice(slap_possible_responses)
-    await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
+    await ctx.send(slap_current_response.format(ctx.author.mention, person.mention))
 
-#jokes
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def jokes(ctx):
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Joke commands\n\n\n-insovietrussia\nThis command randomizes between lots of "In Soviet Russia" jokes.\n\n-chucknorris\nRandomizes between lots of Chuck Norris jokes/facts.\n\n-dadjoke\nRandomizes between lots of really not funny bad Dad jokes!',color=0x2874A6)
-		await bot.say(embed=embed)
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Joke commands\n\n\n-insovietrussia\nThis command randomizes between lots of "In Soviet Russia" jokes.\n\n-chucknorris\nRandomizes between lots of Chuck Norris jokes/facts.\n\n-dadjoke\nRandomizes between lots of really not funny bad Dad jokes!',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def insovietrussia(ctx):
-    '''Randomizes between lots of insovietrussia jokes.
-    Usage: -insovietrussia
-    '''
-    insovietrussia_possible_responses = ["In America, you drive a car. In Soviet Russia, a car drives you!",  "In America the president gets assassinated. In soviet Russia, the president assassinates you!", "In America, you throw a grenade! In Soviet Russia, a grenade throws you!", "In America, you eat food. In Soviet Russia, food eats you!", "In America, you write 'R'. In Soviet Russia, you write 'Я'!", "In America, you break the law. In Soviet Russia, the law breaks you!", "Roses are red, Violets are blue, In Soviet Russia, a poem writes you!", "In America, the Grinch steals Christmas. In Soviet Russia, Christmas steals the Grinch!", "In America, you laugh at jokes. In Soviet Russia, jokes laugh at you!", "In America, Jesus sacrifices for you. In Soviet Russia, you sacrifice for Jesus!", "In America, Russians spy on you. In Soviet Russia, you spy on Russians!", "In America, you find Waldo. In Soviet Russia, Waldo finds you!", "In America, you call the police. In Soviet Russia, police calls you!", "In America, you watch TV. In Soviet Russia, the TV watches you!", "In America, you eat a cookie. But in Soviet Russia, the cookie eats you!", "In America, you play games. In Soviet Russia, games play you!"]
+    'Randomizes between lots of insovietrussia jokes.\n    Usage: -insovietrussia\n    '
+    insovietrussia_possible_responses = [
+        'In America, you drive a car. In Soviet Russia, a car drives you!',
+        'In America the president gets assassinated. In soviet Russia, the president assassinates you!',
+        'In America, you throw a grenade! In Soviet Russia, a grenade throws you!',
+        'In America, you eat food. In Soviet Russia, food eats you!',
+        "In America, you write 'R'. In Soviet Russia, you write 'Я'!",
+        'In America, you break the law. In Soviet Russia, the law breaks you!',
+        'Roses are red, Violets are blue, In Soviet Russia, a poem writes you!',
+        'In America, the Grinch steals Christmas. In Soviet Russia, Christmas steals the Grinch!',
+        'In America, you laugh at jokes. In Soviet Russia, jokes laugh at you!',
+        'In America, Jesus sacrifices for you. In Soviet Russia, you sacrifice for Jesus!',
+        'In America, Russians spy on you. In Soviet Russia, you spy on Russians!',
+        'In America, you find Waldo. In Soviet Russia, Waldo finds you!',
+        'In America, you call the police. In Soviet Russia, police calls you!',
+        'In America, you watch TV. In Soviet Russia, the TV watches you!',
+        'In America, you eat a cookie. But in Soviet Russia, the cookie eats you!',
+        'In America, you play games. In Soviet Russia, games play you!'
+    ]
     insovietrussia_current_response = random.choice(insovietrussia_possible_responses)
-    await bot.say(insovietrussia_current_response)
-@bot.command(pass_context=True)
+    await ctx.send(insovietrussia_current_response)
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def chucknorris(ctx):
-    '''Randomizes between lots of Chuck Norris jokes.
-    Usage: -chucknorris
-    '''
-    chucknorris_possible_responses = ["Chuck Norris threw a grenade and killed 50 people, then it exploded.", "Chuck Norris can kill two stones with one bird.", "Chuck Norris can pick oranges from an apple tree and make the best lemonade you've ever tasted.", "Once a cobra bit Chuck Norris' leg. After five days of excruciating pain, the cobra died.", "When a zombie apocalypse starts, Chuck Norris doesn't try to survive. The zombies do.", "Chuck Norris can hear sign language.", "Chuck Norris beat the sun in a staring contest.","It is considered a great accomplishment to go down Niagara Falls in a wooden barrel. Chuck Norris can go up Niagara Falls in a cardboard box.", "Chuck Norris was once on Celebrity Wheel of Fortune and was the first to spin. The next 29 minutes of the show consisted of everyone standing around awkwardly, waiting for the wheel to stop.", "Giraffes were created when Chuck Norris uppercut a horse.", "When the Bogeyman goes to sleep every night he checks his closet for Chuck Norris.", "When Chuck Norris was in middle school, his English teacher assigned an essay: \'What is courage?\' He received an A+ for turning in a blank page with only his name at the top.", "Chuck Norris will never have a heart attack... even a heart isn't foolish enough to attack Chuck Norris.", "Chuck Norris can kill your imaginary friends.", "Chuck can set ants on fire with a magnifying glass. At night.", "Chuck Norris once went to mars. Thats why there are no signs of life.", "When Bruce Banner gets mad he turns into the Hulk. When the Hulk gets mad he turns into Chuck Norris. When Chuck Norris gets mad, run.", "Chuck Norris is the reason Waldo is hiding.", "Chuck Norris is the only person that can punch a cyclops between the eye.", "When Chuck Norris enters a room, he doesn't turn the lights on, he turns the dark off.", "M.C. Hammer learned the hard way that Chuck Norris can touch this.", "Chuck Norris can build a snowman out of rain.", "Chuck Norris was once charged with three attempted murders in Boulder County, but the Judge quickly dropped the charges because Chuck Norris does not \'attempt\' murder.", "Leading hand sanitizers claim they can kill 99.9 percent of germs. Chuck Norris can kill 100 percent of whatever the hell he wants.", "Chuck Norris's computer has no \'backspace\' button, Chuck Norris doesn't make mistakes.", "Chuck Norris makes onions cry.", "Chuck Norris tells Simon what to do.", "Chuck Norris plays Russian roulette with a fully loaded revolver... and wins."]
+    'Randomizes between lots of Chuck Norris jokes.\n    Usage: -chucknorris\n    '
+    chucknorris_possible_responses = [
+        'Chuck Norris threw a grenade and killed 50 people, then it exploded.',
+        'Chuck Norris can kill two stones with one bird.',
+        "Chuck Norris can pick oranges from an apple tree and make the best lemonade you've ever tasted.",
+        "Once a cobra bit Chuck Norris' leg. After five days of excruciating pain, the cobra died.",
+        "When a zombie apocalypse starts, Chuck Norris doesn't try to survive. The zombies do.",
+        'Chuck Norris can hear sign language.', 'Chuck Norris beat the sun in a staring contest.',
+        'It is considered a great accomplishment to go down Niagara Falls in a wooden barrel. Chuck Norris can go up Niagara Falls in a cardboard box.',
+        'Chuck Norris was once on Celebrity Wheel of Fortune and was the first to spin. The next 29 minutes of the show consisted of everyone standing around awkwardly, waiting for the wheel to stop.',
+        'Giraffes were created when Chuck Norris uppercut a horse.',
+        'When the Bogeyman goes to sleep every night he checks his closet for Chuck Norris.',
+        "When Chuck Norris was in middle school, his English teacher assigned an essay: 'What is courage?' He received an A+ for turning in a blank page with only his name at the top.",
+        "Chuck Norris will never have a heart attack... even a heart isn't foolish enough to attack Chuck Norris.",
+        'Chuck Norris can kill your imaginary friends.',
+        'Chuck can set ants on fire with a magnifying glass. At night.',
+        'Chuck Norris once went to mars. Thats why there are no signs of life.',
+        'When Bruce Banner gets mad he turns into the Hulk. When the Hulk gets mad he turns into Chuck Norris. When Chuck Norris gets mad, run.',
+        'Chuck Norris is the reason Waldo is hiding.',
+        'Chuck Norris is the only person that can punch a cyclops between the eye.',
+        "When Chuck Norris enters a room, he doesn't turn the lights on, he turns the dark off.",
+        'M.C. Hammer learned the hard way that Chuck Norris can touch this.',
+        'Chuck Norris can build a snowman out of rain.',
+        "Chuck Norris was once charged with three attempted murders in Boulder County, but the Judge quickly dropped the charges because Chuck Norris does not 'attempt' murder.",
+        'Leading hand sanitizers claim they can kill 99.9 percent of germs. Chuck Norris can kill 100 percent of whatever the hell he wants.',
+        "Chuck Norris's computer has no 'backspace' button, Chuck Norris doesn't make mistakes.",
+        'Chuck Norris makes onions cry.', 'Chuck Norris tells Simon what to do.',
+        'Chuck Norris plays Russian roulette with a fully loaded revolver... and wins.'
+    ]
     chucknorris_current_response = random.choice(chucknorris_possible_responses)
-    await bot.say(chucknorris_current_response)
-@bot.command(pass_context=True)
+    await ctx.send(chucknorris_current_response)
+
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def dadjoke(ctx):
-    '''Randomizes between lots of terrible Dad jokes.
-    Usage: -dadjoke
-    '''
-    chucknorris_possible_responses = ["What time did the man go to the dentist? Tooth hurt-y.","A ham sandwich walks into a bar and orders a beer. \nBartender says, 'Sorry we don't serve food here.'","Whenever the cashier at the grocery store asks my dad if he would like the milk in a bag he replies, 'No, just leave it in the carton!'","Me: 'Dad, make me a sandwich!' \nDad: 'Poof, You’re a sandwich!'","How do you make a Kleenex dance? Put a little boogie in it!","Two peanuts were walking down the street. One was a salted.","We were getting fast food when the lady at the window said, 'Any condiments?' My dad responded, 'Compliments? You look very nice today!'","My dad’s name is Phil, and whenever I finish eating and say, 'Dad, I’m full,' he always replies, 'No, I’m full; you're Ruby.'","I'm reading a book about anti-gravity. It's impossible to put down!","You're American when you go into the bathroom, and you're American when you come out, but do you know what you are while you're in there? European.","Did you know the first French fries weren't actually cooked in France? They were cooked in Greece.","Want to hear a joke about a piece of paper? Never mind... it's tearable."," I just watched a documentary about beavers. It was the best dam show I ever saw!","Spring is here! I got so excited I wet my plants!","I bought some shoes from a drug dealer. I don't know what he laced them with, but I was tripping all day!","When a dad drives past a graveyard: Did you know that's a popular cemetery? Yep, people are just dying to get in there!","Why did the invisible man turn down the job offer? He couldn't see himself doing it.","I used to have a job at a calendar factory but I got the sack because I took a couple of days off.","How do you make holy water? You boil the hell out of it.","MOM: 'How do I look?' DAD: 'With your eyes.'","What did the horse say after it tripped? 'Help! I’ve fallen and I can’t giddyup!'","Did you hear about the circus fire? It was in tents!","Don't trust atoms. They make up everything!","What do you call a cow with two legs? Lean beef. If the cow has no legs, then it’s ground beef.","How many tickles does it take to make an octopus laugh? Ten-tickles.","I’m only familiar with 25 letters in the English language. I don’t know why.","What's the best part about living in Switzerland? I don't know, but the flag is a big plus.","What do prisoners use to call each other? Cell phones.","Why couldn't the bike standup by itself? It was two tired.","What do you call a dog that can do magic? A Labracadabrador.","The fattest knight at King Arthur’s round table was Sir Cumference. He acquired his size from too much pi."," Did you see they made round bails of hay illegal in Wisconsin? It’s because the cows weren’t getting a square meal.","SERVER: 'Sorry about your wait.' DAD: 'Are you saying I’m fat?'","You know what the loudest pet you can get is? A trumpet.","I was interrogated over the theft of a cheese toastie. Man, they really grilled me.","What do you get when you cross a snowman with a vampire? Frostbite.","What do you call a deer with no eyes? No idea!","Can February March? No, but April May!","Why can't you hear a pterodactyl go to the bathroom? Because the pee is silent."," What does a zombie vegetarian eat? 'GRRRAAAAAIIIINNNNS!'","Why wasn't the woman happy with the velcro she bought? It was a total ripoff.","What do you call someone with no body and no nose? Nobody knows.","You heard of that new band 1023MB? They're good but they haven't got a gig yet.","Why did the crab never share? Because he's shellfish."]
+    'Randomizes between lots of terrible Dad jokes.\n    Usage: -dadjoke\n    '
+    chucknorris_possible_responses = [
+        'What time did the man go to the dentist? Tooth hurt-y.',
+        "A ham sandwich walks into a bar and orders a beer. \nBartender says, 'Sorry we don't serve food here.'",
+        "Whenever the cashier at the grocery store asks my dad if he would like the milk in a bag he replies, 'No, just leave it in the carton!'",
+        "Me: 'Dad, make me a sandwich!' \nDad: 'Poof, You’re a sandwich!'",
+        'How do you make a Kleenex dance? Put a little boogie in it!',
+        'Two peanuts were walking down the street. One was a salted.',
+        "We were getting fast food when the lady at the window said, 'Any condiments?' My dad responded, 'Compliments? You look very nice today!'",
+        "My dad’s name is Phil, and whenever I finish eating and say, 'Dad, I’m full,' he always replies, 'No, I’m full; you're Ruby.'",
+        "I'm reading a book about anti-gravity. It's impossible to put down!",
+        "You're American when you go into the bathroom, and you're American when you come out, but do you know what you are while you're in there? European.",
+        "Did you know the first French fries weren't actually cooked in France? They were cooked in Greece.",
+        "Want to hear a joke about a piece of paper? Never mind... it's tearable.",
+        ' I just watched a documentary about beavers. It was the best dam show I ever saw!',
+        'Spring is here! I got so excited I wet my plants!',
+        "I bought some shoes from a drug dealer. I don't know what he laced them with, but I was tripping all day!",
+        "When a dad drives past a graveyard: Did you know that's a popular cemetery? Yep, people are just dying to get in there!",
+        "Why did the invisible man turn down the job offer? He couldn't see himself doing it.",
+        'I used to have a job at a calendar factory but I got the sack because I took a couple of days off.',
+        'How do you make holy water? You boil the hell out of it.', "MOM: 'How do I look?' DAD: 'With your eyes.'",
+        "What did the horse say after it tripped? 'Help! I’ve fallen and I can’t giddyup!'",
+        'Did you hear about the circus fire? It was in tents!', "Don't trust atoms. They make up everything!",
+        'What do you call a cow with two legs? Lean beef. If the cow has no legs, then it’s ground beef.',
+        'How many tickles does it take to make an octopus laugh? Ten-tickles.',
+        'I’m only familiar with 25 letters in the English language. I don’t know why.',
+        "What's the best part about living in Switzerland? I don't know, but the flag is a big plus.",
+        'What do prisoners use to call each other? Cell phones.',
+        "Why couldn't the bike standup by itself? It was two tired.",
+        'What do you call a dog that can do magic? A Labracadabrador.',
+        'The fattest knight at King Arthur’s round table was Sir Cumference. He acquired his size from too much pi.',
+        ' Did you see they made round bails of hay illegal in Wisconsin? It’s because the cows weren’t getting a square meal.',
+        "SERVER: 'Sorry about your wait.' DAD: 'Are you saying I’m fat?'",
+        'You know what the loudest pet you can get is? A trumpet.',
+        'I was interrogated over the theft of a cheese toastie. Man, they really grilled me.',
+        'What do you get when you cross a snowman with a vampire? Frostbite.',
+        'What do you call a deer with no eyes? No idea!', 'Can February March? No, but April May!',
+        "Why can't you hear a pterodactyl go to the bathroom? Because the pee is silent.",
+        " What does a zombie vegetarian eat? 'GRRRAAAAAIIIINNNNS!'",
+        "Why wasn't the woman happy with the velcro she bought? It was a total ripoff.",
+        'What do you call someone with no body and no nose? Nobody knows.',
+        "You heard of that new band 1023MB? They're good but they haven't got a gig yet.",
+        "Why did the crab never share? Because he's shellfish."
+    ]
     chucknorris_current_response = random.choice(chucknorris_possible_responses)
-    await bot.say(chucknorris_current_response)
+    await ctx.send(chucknorris_current_response)
 
-#moderation
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def moderation(ctx):
-    '''Shows a list of moderation commands.
-    Usage: -moderation
-    '''
+    'Shows a list of moderation commands.\n    Usage: -moderation\n    '
     if ctx.invoked_subcommand is None:
-	    embed=discord.Embed(description='Moderation commands\n\n-kick\n-kick <username mentioned>\nKick someone.\nNeeds permission kick_members.\n\n-ban\n-ban <mentioned username>\nBan someone.\nNeeds ban_members permission.\n\n-clear\n-clear <2 or over>\nClears the amount of messages you want to be cleared.\nNeeds permission manage_messages.\n\n-mute\n-mute <username mentioned>\nmute someone.\nNeeds permission manage_messages.\n\n-unmute\n-unmute <username mentioned>\nunmute someone.\nNeeds permission manage_messages.\n\n-unban\n-unban <mentioned username>\nUnban someone.\nNeeds ban_members permission.', color=0x2874A6)
-	    await bot.say(embed=embed)
+        embed = discord.Embed(
+            description=
+            'Moderation commands\n\n-kick\n-kick <username mentioned>\nKick someone.\nNeeds permission kick_members.\n\n-ban\n-ban <mentioned username>\nBan someone.\nNeeds ban_members permission.\n\n-clear\n-clear <2 or over>\nClears the amount of messages you want to be cleared.\nNeeds permission manage_messages.\n\n-mute\n-mute <username mentioned>\nmute someone.\nNeeds permission manage_messages.\n\n-unmute\n-unmute <username mentioned>\nunmute someone.\nNeeds permission manage_messages.\n\n-unban\n-unban <mentioned username>\nUnban someone.\nNeeds ban_members permission.',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.command(pass_context = True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def kick(ctx, *, member : discord.Member = None):
-    '''Kick someone
-    Usage: -kick <@person>
-    Example: -kick @Pointless
-    '''
-    if not ctx.message.author.server_permissions.kick_members:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: kick_members.', color=0xFF0000)
-        await bot.say(embed=embed)
+async def kick(ctx, *, member: discord.Member = None):
+    'Kick someone\n    Usage: -kick <@person>\n    Example: -kick @Pointless\n    '
+    if (not ctx.author.guild_permissions.kick_members):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: kick_members.", color=16711680)
+        await ctx.send(embed=embed)
         return
- 
-    if not member:
-        return await bot.say(ctx.message.author.mention + ", specify a user to kick!")
+    if (not member):
+        return await ctx.send(ctx.author.mention + ', specify a user to kick!')
     try:
-        await bot.kick(member)
+        await member.kick()
     except Exception as e:
         if 'Privilege is too low' in str(e):
-            embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-            return await bot.say(embed = embed)
- 
-    embed = discord.Embed(description =f"**%s** has been kicked!"%member.name, color = 0xFF0000)
-    return await bot.say(embed = embed)
+            embed = discord.Embed(
+                description=':x: The person you are trying to ban has high permissions.', color=16711680)
+            return await ctx.send(embed=embed)
+    embed = discord.Embed(description=f'''**%s** has been kicked!''' % member.name, color=16711680)
+    return await ctx.send(embed=embed)
 
-@bot.command(pass_context = True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def ban(ctx, *, member : discord.Member = None, reason:str=None):
-	'''Ban someone.
-	Usage: -ban <@person>
-	Example: -ban @Pointless
-	'''
-	if not ctx.message.author.server_permissions.ban_members:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
-		await bot.say(embed=embed)
-		return
- 
-	if not member:
-		return await bot.say(ctx.message.author.mention + ", specify a user to ban!")
-	try:
-		await bot.ban(member)
-	except Exception as e:
-		if 'Privilege is too low' in str(e):
-			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-			return await bot.say(embed = embed)
- 
-	embed = discord.Embed(description = "**%s** has been banned!"%member.name, color = 0xFF0000)
-	return await bot.say(embed = embed)
-
-@bot.command(pass_context = True, aliases=['uban'])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def unban(ctx, *, member : discord.Member = None):
-	'''Unban someone.
-	Usage: -unban <@person>
-	Example: -unban @Pointless
-	'''
-	if not ctx.message.author.server_permissions.ban_members:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
-		await bot.say(embed=embed)
-		return
- 
-	if not member:
-		return await bot.say(ctx.message.author.mention + ", specify a user to unban!")
-	try:
-		await bot.unban(member)
-	except Exception as e:
-		if 'Privilege is too low' in str(e):
-			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-			return await bot.say(embed = embed)
- 
-	embed = discord.Embed(description = "**%s** has been unbanned!"%member.name, color = 0xFF0000)
-	return await bot.say(embed = embed)
-
-@bot.command(pass_context=True, aliases=['purge','prune'])  
-@commands.cooldown(1, 3, commands.BucketType.user)    
-async def clear(ctx, amount:int):
-    '''Clear messages of over 2 or more.
-    Usage: -clear <number>
-    Example: -clear 15
-    '''
-    if not ctx.message.author.server_permissions.manage_messages:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-        await bot.say(embed=embed)
+async def ban(ctx, *, member: discord.Member = None, reason: str = None):
+    'Ban someone.\n\tUsage: -ban <@person>\n\tExample: -ban @Pointless\n\t'
+    if (not ctx.author.guild_permissions.ban_members):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: ban_members.", color=16711680)
+        await ctx.send(embed=embed)
         return
-    deleted = await bot.purge_from(ctx.message.channel, limit=amount)
+    if (not member):
+        return await ctx.send(ctx.author.mention + ', specify a user to ban!')  #jokes
+    try:
+        await member.ban()
+    except Exception as e:
+        if 'Privilege is too low' in str(e):
+            embed = discord.Embed(
+                description=':x: The person you are trying to ban has high permissions.', color=16711680)
+            return await ctx.send(embed=embed)
+    embed = discord.Embed(description='**%s** has been banned!' % member.name, color=16711680)
+    return await ctx.send(embed=embed)
+
+
+@bot.command(aliases=['uban'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def unban(ctx, *, member: discord.Member = None):
+    'Unban someone.\n\tUsage: -unban <@person>\n\tExample: -unban @Pointless\n\t'
+    if (not ctx.author.guild_permissions.ban_members):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: ban_members.", color=16711680)
+        await ctx.send(embed=embed)
+        return
+    if (not member):
+        return await ctx.send(ctx.author.mention + ', specify a user to unban!')
+    try:
+        await member.unban()
+    except Exception as e:
+        if 'Privilege is too low' in str(e):
+            embed = discord.Embed(
+                description=':x: The person you are trying to ban has high permissions.', color=16711680)
+            return await ctx.send(embed=embed)
+    embed = discord.Embed(description='**%s** has been unbanned!' % member.name, color=16711680)
+    return await ctx.send(embed=embed)
+
+
+@bot.command(aliases=['purge', 'prune'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def clear(ctx, amount: int):
+    'Clear messages of over 2 or more.\n    Usage: -clear <number>\n    Example: -clear 15\n    '
+    if (not ctx.author.guild_permissions.manage_messages):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: manage_messages.", color=16711680)
+        await ctx.send(embed=embed)
+        return  #moderation
+    deleted = await ctx.channel.purge(limit=amount)
     await asyncio.sleep(0.1)
     try:
-        deleted_message = await bot.say("{}, I have deleted {} messages.".format(ctx.message.author.mention, len(deleted)))
+        deleted_message = await ctx.send('{}, I have deleted {} messages.'.format(ctx.author.mention, len(deleted)))
         await asyncio.sleep(5)
-        await bot.delete_message(deleted_message)
+        await deleted_message.delete()
     except:
         pass
 
-@bot.command(pass_context=True, no_pm=True)
+
+@bot.command(no_pm=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def mute(ctx, *, member : discord.Member, reason:str=None):
-    '''Mute someone.
-    Usage: -mute <@person>
-    Example: -mute @Pointless
-    '''
-    if not ctx.message.author.server_permissions.manage_messages:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-        await bot.say(embed=embed)
+async def mute(ctx, *, member: discord.Member, reason: str = None):
+    'Mute someone.\n    Usage: -mute <@person>\n    Example: -mute @Pointless\n    '
+    if (not ctx.author.guild_permissions.manage_messages):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: manage_messages.", color=16711680)
+        await ctx.send(embed=embed)
         return
     overwrite = discord.PermissionOverwrite()
     overwrite.send_messages = False
-    await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+    await ctx.channel.set_permissions(member)
+    embed = discord.Embed(description='**%s** has been muted!' % member.name, color=16711680)
+    return await ctx.send(embed=embed)
 
-    embed = discord.Embed(description = "**%s** has been muted!"%member.name, color = 0xFF0000)
-    return await bot.say(embed = embed)
 
-@bot.command(pass_context=True, no_pm=True, aliases=['umute'])
+@bot.command(no_pm=True, aliases=['umute'])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def unmute(ctx, *, member : discord.Member):
-    '''Unmute someone.
-    Usage: -unmute <@person>
-    Example: -unmute @Pointless
-    '''
-    if not ctx.message.author.server_permissions.manage_messages:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-        await bot.say(embed=embed)
+async def unmute(ctx, *, member: discord.Member):
+    'Unmute someone.\n    Usage: -unmute <@person>\n    Example: -unmute @Pointless\n    '
+    if (not ctx.author.guild_permissions.manage_messages):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: manage_messages.", color=16711680)
+        await ctx.send(embed=embed)
         return
     overwrite = discord.PermissionOverwrite()
     overwrite.send_messages = True
-    await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+    await ctx.channel.set_permissions(member)
+    embed = discord.Embed(description='**%s** has been unmuted!' % member.mention, color=16711680)
+    return await ctx.send(embed=embed)
 
-    embed = discord.Embed(description = "**%s** has been unmuted!"%member.mention, color = 0xFF0000)
-    return await bot.say(embed = embed)
-@bot.command(pass_context = True, aliases=['sban'])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def softban(ctx, *, member : discord.Member = None):
-	'''Softban someone.
-	Usage: -softban <@person>
-	Example: -softban @Pointless
-	'''
-	if not ctx.message.author.server_permissions.ban_members:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
-		await bot.say(embed=embed)
-		return
- 
-	if not member:
-		return await bot.say(ctx.message.author.mention + ", specify a user to ban!")
-	try:
-		await bot.ban(member)
-		await bot.unban(member.server,member)
-	except Exception as e:
-		if 'Privilege is too low' in str(e):
-			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-			return await bot.say(embed = embed)
- 
-	embed = discord.Embed(description = "**%s** has been soft-banned!"%member.name, color = 0xFF0000)
-	return await bot.say(embed = embed)
-		
 
-#server
-@bot.group(pass_context=True)
+@bot.command(aliases=['sban'])
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def server(ctx):
-	'''Shows a list of server commands.
-	Usage: -server
-	Example: -server
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Server commands\n\n-serverinfo\nCheck the info about the server.\n\n-bans\nLists the banned people on the server.\n\n-userinfo\nCheck info about you or other users.', color=0x2874A6)
-		await bot.say(embed=embed)
+async def softban(ctx, *, member: discord.Member = None):
+    'Softban someone.\n\tUsage: -softban <@person>\n\tExample: -softban @Pointless\n\t'
+    if (not ctx.author.guild_permissions.ban_members):
+        embed = discord.Embed(
+            description=":x: You don't have enough permissions for this: ban_members.", color=16711680)
+        await ctx.send(embed=embed)
+        return
+    if (not member):
+        return await ctx.send(ctx.author.mention + ', specify a user to ban!')
+    try:
+        await member.ban()
+        await member.guild.unban(member)
+    except Exception as e:
+        if 'Privilege is too low' in str(e):
+            embed = discord.Embed(
+                description=':x: The person you are trying to ban has high permissions.', color=16711680)
+            return await ctx.send(embed=embed)
+    embed = discord.Embed(description='**%s** has been soft-banned!' % member.name, color=16711680)
+    return await ctx.send(embed=embed)
 
-@bot.command(pass_context = True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def serverinfo(ctx):
-    '''Shows information about the server.
-    Usage: -serverinfo
-    '''
-    server = ctx.message.server
-    roles = [x.name for x in server.role_hierarchy]
+async def guild(ctx):
+    'Shows a list of server commands.\n\tUsage: -server\n\tExample: -server\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Server commands\n\n-serverinfo\nCheck the info about the server.\n\n-bans\nLists the banned people on the server.\n\n-userinfo\nCheck info about you or other users.',
+            color=2651302)
+        await ctx.send(embed=embed)
+
+
+@bot.command()
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def guildinfo(ctx):
+    'Shows information about the server.\n    Usage: -serverinfo\n    '
+    guild = ctx.guild
+    roles = [x.name for x in guild.role_hierarchy]
     role_length = len(roles)
-
-    if role_length > 50: #if theres too much roles lol
+    if role_length > 50:
         roles = roles[:50]
-        roles.append('>>>> Displaying[50/%s] Roles'%len(roles))
+        roles.append('>>>> Displaying[50/%s] Roles' % len(roles))
+    roles = ', '.join(roles)
+    channelz = len(guild.channels)
+    time = str(guild.created_at)
+    time = time.split(' ')
+    time = time[0]
+    join = discord.Embed(description='%s ' % str(server), title='Server Name', colour=65535)
+    join.set_thumbnail(url=server.icon_url)
+    join.add_field(name='__Owner__', value=(str(server.owner) + '\n') + server.owner.id, inline=True)
+    join.add_field(name='__ID__', value=str(server.id), inline=True)
+    join.add_field(name='__Member Count__', value=str(server.member_count), inline=True)
+    join.add_field(name='__Text/Voice Channels__', value=str(channelz), inline=True)
+    join.add_field(name='__Roles (%s)__' % str(role_length), value=roles, inline=True)
+    join.add_field(name='__Region__', value=str(server.region), inline=True)
+    join.add_field(name='__AFK Timeout__', value=str(server.afk_timeout), inline=True)
+    join.add_field(name='__AFK Channel__', value=str(server.afk_channel), inline=True)
+    join.add_field(name='__Verification Level__', value=str(server.verification_level), inline=True)
+    join.add_field(name='__Custom Emotes__', value=len(server.emojis), inline=True)
+    join.add_field(name='__Channels__', value=len(server.channels), inline=True)
+    join.add_field(name='__Features:__', value=ctx.message.server.features, inline=True)
+    join.set_footer(text='Created at: %s' % time)
+    return await ctx.send(embed=join)
 
-    roles = ', '.join(roles);
-    channelz = len(server.channels);
-    time = str(server.created_at); time = time.split(' '); time= time[0];
 
-    join = discord.Embed(description= '%s '%(str(server)),title = 'Server Name', colour = 0xFFFF);
-    join.set_thumbnail(url = server.icon_url);
-    join.add_field(name = '__Owner__', value = str(server.owner) + '\n' + server.owner.id, inline=True);
-    join.add_field(name = '__ID__', value = str(server.id), inline=True)
-    join.add_field(name = '__Member Count__', value = str(server.member_count), inline=True);
-    join.add_field(name = '__Text/Voice Channels__', value = str(channelz), inline=True);
-    join.add_field(name = '__Roles (%s)__'%str(role_length), value = roles, inline=True);
-    join.add_field(name = '__Region__', value = str(server.region), inline=True)
-    join.add_field(name = '__AFK Timeout__', value = str(server.afk_timeout), inline=True)
-    join.add_field(name = '__AFK Channel__', value = str(server.afk_channel), inline=True)
-    join.add_field(name = '__Verification Level__', value = str(server.verification_level), inline=True)
-    join.add_field(name = '__Custom Emotes__', value=len(server.emojis), inline=True)
-    join.add_field(name = '__Channels__', value=len(server.channels), inline=True)
-    join.add_field(name = '__Features:__', value=ctx.message.server.features, inline=True)
-    join.set_footer(text ='Created at: %s'%time);
-
-    return await bot.say(embed = join);
-
-@bot.command(pass_context = True, aliases=['banlist'])
+@bot.command(aliases=['banlist'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def bans(ctx):
-    '''Shows a list of bans.
-    Usage: -bans
-    '''
-    x = await bot.get_bans(ctx.message.server)
+    'Shows a list of bans.\n    Usage: -bans\n    '
+    x = await ctx.guild.bans()
     x = '\n'.join([y.name for y in x])
     xc = len(x)
     if xc == 0:
-        x = 'No one is banned.'	
-    embed = discord.Embed(title = "List of banned people:", description = x, color = 0xFFFFF)
-    return await bot.say(embed = embed)
+        x = 'No one is banned.'
+    embed = discord.Embed(title='List of banned people:', description=x, color=1048575)
+    return await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def userinfo(ctx, user: discord.Member = None):
-    '''Shows information about a user.
-    Usage: -userinfo <@person>
-    Example: -userinfo @Pointless
-    '''
+    'Shows information about a user.\n    Usage: -userinfo <@person>\n    Example: -userinfo @Pointless\n    '
     member = discord.User
-    if not user:
-          user = ctx.message.author
-    join = discord.Embed(description= '%s '%(str(user)),title = '__Full Name__', colour = 0xFFFF);
-    join.set_thumbnail(url = user.avatar_url);
-    join.add_field(name = '__Name__', value = str(user.name),inline=True);
-    join.add_field(name = '__ID__', value = str(user.id),inline=True);
-    join.add_field(name = '__Nickname__', value = str(user.nick),inline=True);
-    join.add_field(name = '__Account Created At__', value = str(user.created_at),inline=True);
-    join.add_field(name = '__Joined Server At__', value = str(user.joined_at),inline=True);
-    join.add_field(name = '__Game__', value = str(user.game),inline=True);
-    join.add_field(name = '__Roles__', value = str("%s") % ", ".join([role.name for role in user.roles if role.name != "@everyone"]),inline=True);
-    join.add_field(name = '__Avatar URL__', value = str(user.avatar_url),inline=True);
-    join.add_field(name = '__Status__', value = str(user.status),inline=True);
-    join.add_field(name = '__Highest Role__', value = str(user.top_role),inline=True);
-    return await bot.say(embed = join);
+    if (not user):
+        user = ctx.author
+    join = discord.Embed(description='%s ' % str(user), title='__Full Name__', colour=65535)
+    join.set_thumbnail(url=user.avatar_url)
+    join.add_field(name='__Name__', value=str(user.name), inline=True)
+    join.add_field(name='__ID__', value=str(user.id), inline=True)
+    join.add_field(name='__Nickname__', value=str(user.nick), inline=True)
+    join.add_field(name='__Account Created At__', value=str(user.created_at), inline=True)
+    join.add_field(name='__Joined Server At__', value=str(user.joined_at), inline=True)
+    join.add_field(name='__Game__', value=str(user.game), inline=True)
+    join.add_field(
+        name='__Roles__',
+        value=str('%s') % ', '.join([role.name for role in user.roles if role.name != '@everyone']),
+        inline=True)
+    join.add_field(name='__Avatar URL__', value=str(user.avatar_url), inline=True)
+    join.add_field(name='__Status__', value=str(user.status), inline=True)
+    join.add_field(name='__Highest Role__', value=str(user.top_role), inline=True)
+    return await ctx.send(embed=join)
 
-#utilities
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def utilities(ctx):
-	'''Shows a list of utility commands.
-	Usage: -utilities
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages \n\n-urbandict\nSearch definitions in the Urban Dictionary.\n\n-math +\nShows a list of mathematic commands.\n\n-conversion +\nShows a list of conversion commands.', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of utility commands.\n\tUsage: -utilities\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Utility commands\n\n\n-avatar\nGet the avatar link of a user.\n\n-poll\nCreate a poll with the thumbs up, shrug and thumbs down reaction.\n\n-embed\nEmbed a message so CommuniBot can say what you wanted.\n\n-translate\nTranslate from one language to another. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages \n\n-urbandict\nSearch definitions in the Urban Dictionary.\n\n-math +\nShows a list of mathematic commands.\n\n-conversion +\nShows a list of conversion commands.',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.command(pass_context=True, no_pm=True)
+
+@bot.command(no_pm=True)
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def avatar(ctx, member : discord.Member = None):
-    '''Get the avatar of a member.
-    Usage: -avatar <@person>
-    Example: -avatar @Pointless
-    '''
-    channel = ctx.message.channel
+async def avatar(ctx, member: discord.Member = None):
+    'Get the avatar of a member.\n    Usage: -avatar <@person>\n    Example: -avatar @Pointless\n    '
+    channel = ctx.channel
     if member is None:
-        member = ctx.message.author
-    await bot.say(member.avatar_url)
+        member = ctx.author
+    await ctx.send(member.avatar_url)
 
-@bot.command(pass_context=True)
+
+@bot.command()
 @commands.cooldown(1, 3, commands.BucketType.user)
-async def poll(ctx,*, message: str):
-    '''Creates a poll.
-    Usage: -poll <text>
-    Example: -poll Do you like CommuniBot?
-    '''
-    
-    embed = discord.Embed(color = ctx.message.author.color, timestamp = datetime.utcnow())
-    embed.set_author(name = "Poll", icon_url = ctx.message.author.avatar_url)
-    embed.description = (message)
-    embed.set_footer(text = ctx.message.author.name)
-    x = await bot.say(embed = embed)
-    await bot.add_reaction(x, "👍")
-    await bot.add_reaction(x, "🤷")
-    await bot.add_reaction(x, "👎")
+async def poll(ctx, *, message: str):
+    'Creates a poll.\n    Usage: -poll <text>\n    Example: -poll Do you like CommuniBot?\n    '
+    embed = discord.Embed(color=ctx.author.color, timestamp=datetime.utcnow())
+    embed.set_author(name='Poll', icon_url=ctx.author.avatar_url)
+    embed.description = message
+    embed.set_footer(text=ctx.author.name)
+    x = await ctx.send(embed=embed)
+    await x.add_reaction('👍')
+    await x.add_reaction('🤷')
+    await x.add_reaction('👎')
 
-@bot.command(pass_context=True, aliases=['tr'])
+
+@bot.command(aliases=['tr'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def translate(ctx, tl, *words: str):
-    '''Translate something. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages
-    Usage: translate <from>-<to>
-    Example: translate en-pl sandwich
-    '''
+    'Translate something. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages\n    Usage: translate <from>-<to>\n    Example: translate en-pl sandwich\n    '  #server
     words = ' '.join(words)
-    answer = requests.get("https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}".format(words,tl)).json()
-    await bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
+    answer = requests.get(
+        'https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170315T092303Z.ece41a1716ebea56.a289d8de3dc45f8ed21e3be5b2ab96e378f684fa&text={0}&lang={1}'.
+        format(words, tl)).json()
+    await ctx.send('{0} {1}'.format(ctx.author.mention, str(answer['text'])[2:(-2)]))
 
-@bot.command(pass_context=True, aliases=['urbandictionary','urbandict','udict','udictionary','udefine','urbandefine'])
+
+@bot.command(aliases=['urbandictionary', 'urbandict', 'udict', 'udictionary', 'udefine', 'urbandefine'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def urban(ctx, *words: str):
-    '''Check something in urban dictionary
-    Usage: urbandict <word>
-    Example: urbandict Hello
-    '''
+    'Check something in urban dictionary\n    Usage: urbandict <word>\n    Example: urbandict Hello\n    '
     words = ''.join(words)
-    answer = requests.get("http://api.urbandictionary.com/v0/define?term={0}".format(words)).json()
+    answer = requests.get('http://api.urbandictionary.com/v0/define?term={0}'.format(words)).json()
     if len(answer['list']) == 0:
-        await bot.say("No definition found.")
-    await bot.say("**{0}**: {1}".format(words, answer['list'][0]['definition']))
+        await ctx.send('No definition found.')
+    await ctx.send('**{0}**: {1}'.format(words, answer['list'][0]['definition']))
 
-@bot.command(name='_-', pass_context=True)
+
+@bot.command(name='_-')
 async def _correction(ctx):
-    '''-_- Correction.
-    '''
+    '-_- Correction.\n    '
     return
 
-@bot.group(pass_context=True, aliases=['maths','mathematics','mathematic','calculation'])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def math(ctx):
-	'''Shows a list of math commands.
-	Usage: -math
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Math commands\n\n\n-add\nAdd two numbers together.\n\n-subtract\nSubtract two numbers.\n\n-multiply\nMultiply two numbers together.\n\n-divide\nDivide two numbers together\n\n-modulo\nFind the remainder of a number when divided together.\n\n-exponent\nFind a number to the power of another number.', color=0x2874A6)
-		await bot.say(embed=embed)
 
-@bot.command(pass_context=True, aliases=['addition'])
+@bot.group(aliases=['maths', 'mathematics', 'mathematic', 'calculation'])
+@commands.cooldown(1, 3, commands.BucketType.user)
+async def math(ctx):  #if theres too much roles lol
+    'Shows a list of math commands.\n\tUsage: -math\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Math commands\n\n\n-add\nAdd two numbers together.\n\n-subtract\nSubtract two numbers.\n\n-multiply\nMultiply two numbers together.\n\n-divide\nDivide two numbers together\n\n-modulo\nFind the remainder of a number when divided together.\n\n-exponent\nFind a number to the power of another number.',
+            color=2651302)
+        await ctx.send(embed=embed)
+
+
+@bot.command(aliases=['addition'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def add(ctx, number1: int, number2: int):
-    '''Add two numbers together.
-    Usage: -add <a> <b>
-    Example: -add 2 2
-    '''
-    await bot.say(number1 + number2)
+    'Add two numbers together.\n    Usage: -add <a> <b>\n    Example: -add 2 2\n    '
+    await ctx.send(number1 + number2)
 
-@bot.command(pass_context=True, aliases=['subtraction','minus'])
+
+@bot.command(aliases=['subtraction', 'minus'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def subtract(ctx, number1: int, number2: int):
-    '''Subtract two numbers.
-    Usage: -subtract <a> <b>
-    Example: -subtract 4 2
-    '''
-    await bot.say(number1 - number2)
+    'Subtract two numbers.\n    Usage: -subtract <a> <b>\n    Example: -subtract 4 2\n    '
+    await ctx.send(number1 - number2)
 
-@bot.command(pass_context=True, aliases=['times','multiplication'])
+
+@bot.command(aliases=['times', 'multiplication'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def multiply(ctx, number1: int, number2: int):
-    '''Multiply two numbers together.
-    Usage: -multiply <a> <b>
-    Example: -multiply 2 2
-    '''
-    await bot.say(number1 * number2)
+    'Multiply two numbers together.\n    Usage: -multiply <a> <b>\n    Example: -multiply 2 2\n    '
+    await ctx.send(number1 * number2)
 
-@bot.command(pass_context=True, aliases=['division','share'])
+
+@bot.command(aliases=['division', 'share'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def divide(ctx, number1: int, number2: int):
-    '''Divide two numbers.
-    Usage: -divide <a> <b>
-    Example: -divide 10 5
-    '''
-    await bot.say(number1 / number2)
+    'Divide two numbers.\n    Usage: -divide <a> <b>\n    Example: -divide 10 5\n    '
+    await ctx.send(number1 / number2)
 
-@bot.command(pass_context=True, aliases=['remainder','modulus'])
+
+@bot.command(aliases=['remainder', 'modulus'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def modulo(ctx, number1: int, number2: int):
-    '''Find the remainder of when you divide two numbers together.
-    Usage: -modulo <a> <b>
-    Example: -modulo 7 3
-    '''
-    await bot.say(number1 % number2)
+    'Find the remainder of when you divide two numbers together.\n    Usage: -modulo <a> <b>\n    Example: -modulo 7 3\n    '
+    await ctx.send(number1 % number2)
 
-@bot.command(pass_context=True, aliases=['power'])
+
+@bot.command(aliases=['power'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def exponent(ctx, number1: int, number2: int):
-    '''Find the power of a number how many times you like.
-    Usage: -exponent <a> <b>
-    Example: -exponent 4 2
-    '''
-    await bot.say(number1 ** number2)
+    'Find the power of a number how many times you like.\n    Usage: -exponent <a> <b>\n    Example: -exponent 4 2\n    '
+    await ctx.send(number1**number2)
 
-@bot.group(pass_context=True, aliases=['convert'])
+
+@bot.group(aliases=['convert'])
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def conversion(ctx):
-	'''Shows a list of commands that converts from one unit of whatever to another.
-	Usage: -conversion
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Conversion commands\n\n\n-temperature +\nShows a list of temperature conversion commands.', color=0x2874A6)
-		await bot.say(embed=embed)
-    
-@bot.group(pass_context=True)
+    'Shows a list of commands that converts from one unit of whatever to another.\n\tUsage: -conversion\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description='Conversion commands\n\n\n-temperature +\nShows a list of temperature conversion commands.',
+            color=2651302)
+        await ctx.send(embed=embed)
+
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def temperature(ctx):
-	'''Shows a list of temperature conversion commands.
-	Usage: -temperature
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Temperature Conversion commands\n\n\n-centigrade +\nShows a list of centigrade commands.\n\n-kelvin +\nShows a list of Kelvin commands.\n\n-fahrenheit +\nShows a list of Fahrenheit commands.\n\n-rankine +\nShows a list of Rankine commands.', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of temperature conversion commands.\n\tUsage: -temperature\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Temperature Conversion commands\n\n\n-centigrade +\nShows a list of centigrade commands.\n\n-kelvin +\nShows a list of Kelvin commands.\n\n-fahrenheit +\nShows a list of Fahrenheit commands.\n\n-rankine +\nShows a list of Rankine commands.',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def centigrade(ctx):
-	'''Shows a list of centigrade conversion commands.
-	Usage: -centigrade
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Centigrade Conversion commands\n\n\n-centigrade-fahrenheit\nConverts Centigrade to Fahrenheit.\n\n-centigrade-kelvin\nConverts Centigrade to Kelvin.\n\n-centigrade-rankine\nConverts Centigrade to Rankine.', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of centigrade conversion commands.\n\tUsage: -centigrade\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Centigrade Conversion commands\n\n\n-centigrade-fahrenheit\nConverts Centigrade to Fahrenheit.\n\n-centigrade-kelvin\nConverts Centigrade to Kelvin.\n\n-centigrade-rankine\nConverts Centigrade to Rankine.',
+            color=2651302)
+        await ctx.send(embed=embed)  #utilities
 
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kelvin(ctx):
-	'''Shows a list of Kelvin conversion commands.
-	Usage: -kelvin
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Kelvin Conversion commands\n\n\n-kelvin-fahrenheit\nConverts Kelvin to Fahrenheit.\n\n-kelvin-centigrade\nConverts Kelvin to Centigrade.\n\n-kelvin-rankine\nConverts Kelvin to Rankine.', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of Kelvin conversion commands.\n\tUsage: -kelvin\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Kelvin Conversion commands\n\n\n-kelvin-fahrenheit\nConverts Kelvin to Fahrenheit.\n\n-kelvin-centigrade\nConverts Kelvin to Centigrade.\n\n-kelvin-rankine\nConverts Kelvin to Rankine.',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fahrenheit(ctx):
-	'''Shows a list of Fahrenheit conversion commands.
-	Usage: -fahrenheit
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Fahrenheit Conversion commands\n\n\n-fahrenheit-centigrade\nConverts Fahrenheit to Centigrade.\n\n-fahrenheit-kelvin\nConverts Fahrenheit to Kelvin.\n\n-fahrenheit-rankine\nConverts Fahrenheit to Rankine.', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of Fahrenheit conversion commands.\n\tUsage: -fahrenheit\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Fahrenheit Conversion commands\n\n\n-fahrenheit-centigrade\nConverts Fahrenheit to Centigrade.\n\n-fahrenheit-kelvin\nConverts Fahrenheit to Kelvin.\n\n-fahrenheit-rankine\nConverts Fahrenheit to Rankine.',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.group(pass_context=True)
+
+@bot.group()
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rankine(ctx):
-	'''Shows a list of Rankine conversion commands.
-	Usage: -rankine
-	'''
-	if ctx.invoked_subcommand is None:
-		embed=discord.Embed(description='Rankine Conversion commands\n\n\n-rankine-fahrenheit\nConverts Rankine to Fahrenheit.\n\n-rankine-kelvin\nConverts Rankine to Kelvin.\n\n-rankine-centigrade\nConverts Rankine to Centigrade..', color=0x2874A6)
-		await bot.say(embed=embed)
+    'Shows a list of Rankine conversion commands.\n\tUsage: -rankine\n\t'
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(
+            description=
+            'Rankine Conversion commands\n\n\n-rankine-fahrenheit\nConverts Rankine to Fahrenheit.\n\n-rankine-kelvin\nConverts Rankine to Kelvin.\n\n-rankine-centigrade\nConverts Rankine to Centigrade..',
+            color=2651302)
+        await ctx.send(embed=embed)
 
-@bot.command(name='centigrade-fahrenheit',pass_context=True)
+
+@bot.command(name='centigrade-fahrenheit')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def centigrade_fahrenheit(ctx, number: int):
-    '''Convert Centigrade to Fahrenheit
-    Usage: -centigrade-fahrenheit <number>
-    Example: -centigrade-fahrenheit 10
-    '''
-    await bot.say(str((number * 1.8) + 32) + '°F')
+    'Convert Centigrade to Fahrenheit\n    Usage: -centigrade-fahrenheit <number>\n    Example: -centigrade-fahrenheit 10\n    '
+    await ctx.send(str((number * 1.8) + 32) + '°F')
 
-@bot.command(name='centigrade-kelvin',pass_context=True)
+
+@bot.command(name='centigrade-kelvin')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def centigrade_kelvin(ctx, number: int):
-    '''Convert Centigrade to Kelvin
-    Usage: -centigrade-kelvin <number>
-    Example: -centigrade-kelvin 10
-    '''
-    await bot.say(str(number + 273.15) + '°K')
+    'Convert Centigrade to Kelvin\n    Usage: -centigrade-kelvin <number>\n    Example: -centigrade-kelvin 10\n    '
+    await ctx.send(str(number + 273.15) + '°K')
 
-@bot.command(name='centigrade-rankine',pass_context=True)
+
+@bot.command(name='centigrade-rankine')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def centigrade_rankine(ctx, number: int):
-    '''Convert Centigrade to Rankine
-    Usage: -centigrade-rankine <number>
-    Example: -centigrade-rankine 10
-    '''
-    await bot.say(str((number + 273.15) * (9/5)) + '°R')
+    'Convert Centigrade to Rankine\n    Usage: -centigrade-rankine <number>\n    Example: -centigrade-rankine 10\n    '
+    await ctx.send(str((number + 273.15) * (9 / 5)) + '°R')
 
-@bot.command(name='fahrenheit-centigrade',pass_context=True)
+
+@bot.command(name='fahrenheit-centigrade')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fahrenheit_centigrade(ctx, number: int):
-    '''Convert Fahrenheit to Centigrade
-    Usage: -fahrenheit-centigrade <number>
-    Example: -fahrenheit-centigrade 10
-    '''
-    await bot.say(str((number - 32) / 1.8) + '°C')
+    'Convert Fahrenheit to Centigrade\n    Usage: -fahrenheit-centigrade <number>\n    Example: -fahrenheit-centigrade 10\n    '
+    await ctx.send(str((number - 32) / 1.8) + '°C')
 
-@bot.command(name='fahrenheit-kelvin',pass_context=True)
+
+@bot.command(name='fahrenheit-kelvin')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fahrenheit_kelvin(ctx, number: int):
-    '''Convert Fahrenheit to Kelvin
-    Usage: -fahrenheit-kelvin <number>
-    Example: -fahrenheit-kelvin 10
-    '''
-    await bot.say(str((number - 32) / 1.8) + '°K')
+    'Convert Fahrenheit to Kelvin\n    Usage: -fahrenheit-kelvin <number>\n    Example: -fahrenheit-kelvin 10\n    '
+    await ctx.send(str((number - 32) / 1.8) + '°K')
 
-@bot.command(name='fahrenheit-rankine',pass_context=True)
+
+@bot.command(name='fahrenheit-rankine')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def fahrenheit_rankine(ctx, number: int):
-    '''Convert Fahrenheit to Rankine
-    Usage: -fahrenheit-rankine <number>
-    Example: -fahrenheit-rankine 10
-    '''
-    await bot.say(str(number + 459.67) + '°R')
+    'Convert Fahrenheit to Rankine\n    Usage: -fahrenheit-rankine <number>\n    Example: -fahrenheit-rankine 10\n    '
+    await ctx.send(str(number + 459.67) + '°R')
 
-@bot.command(name='kelvin-fahrenheit',pass_context=True)
+
+@bot.command(name='kelvin-fahrenheit')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kelvin_fahrenheit(ctx, number: int):
-    '''Convert Kelvin to Fahrenheit
-    Usage: -kelvin-fahrenheit <number>
-    Example: -kelvin-fahrenheit 10
-    '''
-    await bot.say(str((number * (9/5)) - 459.67) + '°F')
+    'Convert Kelvin to Fahrenheit\n    Usage: -kelvin-fahrenheit <number>\n    Example: -kelvin-fahrenheit 10\n    '
+    await ctx.send(str((number * (9 / 5)) - 459.67) + '°F')
 
-@bot.command(name='kelvin-centigrade',pass_context=True)
+
+@bot.command(name='kelvin-centigrade')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kelvin_centigrade(ctx, number: int):
-    '''Convert Kelvin to Centigrade
-    Usage: -kelvin-Centigrade <number>
-    Example: -kelvin-Centigrade 10
-    '''
-    await bot.say(str(number - 273.15 ) + '°C')
+    'Convert Kelvin to Centigrade\n    Usage: -kelvin-Centigrade <number>\n    Example: -kelvin-Centigrade 10\n    '
+    await ctx.send(str(number - 273.15) + '°C')
 
-@bot.command(name='kelvin-rankine',pass_context=True)
+
+@bot.command(name='kelvin-rankine')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def kelvin_rankine(ctx, number: int):
-    '''Convert Kelvin to Rankine
-    Usage: -kelvin-rankine <number>
-    Example: -kelvin-rankine 10
-    '''
-    await bot.say(str(number * (9/5)) + '°R')
+    'Convert Kelvin to Rankine\n    Usage: -kelvin-rankine <number>\n    Example: -kelvin-rankine 10\n    '
+    await ctx.send(str(number * (9 / 5)) + '°R')
 
-@bot.command(name='rankine-fahrenheit',pass_context=True)
+
+@bot.command(name='rankine-fahrenheit')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rankine_fahrenheit(ctx, number: int):
-    '''Convert Rankine to Fahrenheit
-    Usage: -rankine-fahreneheit <number>
-    Example: -rankine-fahrenheit 10
-    '''
-    await bot.say(str(number - 459.67) + '°F')
+    'Convert Rankine to Fahrenheit\n    Usage: -rankine-fahreneheit <number>\n    Example: -rankine-fahrenheit 10\n    '
+    await ctx.send(str(number - 459.67) + '°F')
 
-@bot.command(name='rankine-centigrade',pass_context=True)
+
+@bot.command(name='rankine-centigrade')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rankine_centigrade(ctx, number: int):
-    '''Convert Rankine to Centigrade
-    Usage: -rankine-centigrade <number>
-    Example: -rankine-centigrade 10
-    '''
-    await bot.say(str((number - 491.67) * (5/9)) + '°C')
+    'Convert Rankine to Centigrade\n    Usage: -rankine-centigrade <number>\n    Example: -rankine-centigrade 10\n    '
+    await ctx.send(str((number - 491.67) * (5 / 9)) + '°C')
 
-@bot.command(name='rankine-kelvin',pass_context=True)
+
+@bot.command(name='rankine-kelvin')
 @commands.cooldown(1, 3, commands.BucketType.user)
 async def rankine_kelvin(ctx, number: int):
-    '''Convert Rankine to Kelvin
-    Usage: -rankine-kelvin <number>
-    Example: -rankine-kelvin 10
-    '''
-    await bot.say(str(number * (5/9)) + '°K')
+    'Convert Rankine to Kelvin\n    Usage: -rankine-kelvin <number>\n    Example: -rankine-kelvin 10\n    '
+    await ctx.send(str(number * (5 / 9)) + '°K')
 
-#token
+
 bot.run(Secrets['Token'])
