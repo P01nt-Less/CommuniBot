@@ -47,10 +47,59 @@ def owner(ctx):
 @bot.command(pass_context=True)
 @commands.check(owner)
 async def say(ctx, *, text: str = None):
-        await bot.say(text)
+    """Say something.
+    Usage: -say <text>
+    Example: -say Potatoes!
+    Permission: Bot Owner
+    """
+    await bot.say(text)
+    await bot.delete_message(ctx.message)
+
+@bot.command(pass_context=True)
+@commands.check(owner)
+async def shutdown(ctx):
+    """Shutdown.
+    Usage: -shutdown
+    Permission: Bot Owner
+    """
+    await bot.say('Shutting down.')
+    await bot.delete_message(ctx.message)
+    await bot.logout()
+
+@bot.command(pass_context=True)
+@commands.check(owner)
+async def servers(ctx):
+    """See the list of servers.
+    Usage: -servers
+    Permission: Bot Owner
+    """
+    msg = ""
+    for server in bot.servers:
+        name = str(server) + "\n"
+        msg += name
+    embed=discord.Embed(description=f'{msg}', color=0x2874A6)
+    await bot.delete_message(ctx.message)
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+@commands.check(owner)
+async def leaveserver(ctx, serverid: str):
+    """Leave a server.
+    Usage: -leaveserver <Server ID>
+    Example: -leaveserver 123456789
+    Permission: Bot Owner
+    """
+    server = bot.get_server(serverid)
+    if server:
+        await bot.leave_server(server)
+        msg = '{} = Left server!'.format(server.name)
+    else:
+        msg1 = ':x: I could not find the ID of that server or you just forgot to say ID of the server!'
+        return await bot.say(msg1)
+    await bot.say(msg)
+
 #ping
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def ping(ctx):
     '''Check how fast the bot responds.
     Usage: -ping
@@ -63,7 +112,6 @@ async def ping(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def prefixes(ctx):
     '''Check all of CommuniBot's prefixes.
     Usage: -prefixes
@@ -73,7 +121,6 @@ async def prefixes(ctx):
 
 #help
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def help(ctx):
     '''See all of the commands from here.
     Usage: -help
@@ -82,7 +129,6 @@ async def help(ctx):
     await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def fun(ctx):
     '''See all of the fun commands from here.
     Usage: -fun
@@ -91,7 +137,6 @@ async def fun(ctx):
         embed=discord.Embed(description='Fun commands\n\n\n-coinflip\nThe bot chooses between heads or tails.\n\n-8ball\nUse the magic 8ball!\n\n-comic\nShows a random comic.\n\n-cat\nShows a random cat picture.\n\n-dog\nShows a random dog picture.\n\n-say\nSay anything after the command and it will repeat it back.\n\n-choose\nMake CommuniBot choose over three or more things.\n\n-roll\nRoll any number above one.\n\n-roast\nRoast someone with a burning statement.\n\n-memes\nRandomizes between lots of memes.\n\n-piglatin\nTranslate your text into piglatin.', color=0x2874A6)
         await bot.say(embed=embed)
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def coinflip(ctx):
     '''Flip a coin to either land on heads or tails.
     Usage: -coinflip
@@ -99,7 +144,6 @@ async def coinflip(ctx):
     choice = random.choice(['Heads!','Tails!'])
     await bot.say(choice)
 @bot.command(name="8ball", pass_context=True, aliases=['eightball'])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def _8ball(self, *, question : str):
     '''Ask the bot a question and it will answer.
     Usage: -8ball <text>?
@@ -112,9 +156,7 @@ async def _8ball(self, *, question : str):
         await self.bot.say(":8ball:" + random.choice(random.choice(responses)))
     else:
         await self.bot.say("That doesn't look like a question. You need to put a question mark at the end of your sentence.")
-
 @bot.command(pass_context=True, no_pm=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def comic(ctx):
     '''Check out a random comic.
     Usage: -comic
@@ -128,7 +170,6 @@ async def comic(ctx):
             await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def cat(ctx):
     '''Check out a random cat.
     Usage: -cat
@@ -146,7 +187,6 @@ async def cat(ctx):
                 await bot.say('Could not access random.cat API!')
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def dog(ctx):
     '''Check out a random dog.
     Usage: -dog
@@ -167,7 +207,6 @@ async def dog(ctx):
                 await bot.say(embed=embed)
 
 @bot.command(name='choose', aliases=['select','choice'],pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def choose(self, ctx, *args):
     '''Make the bot choose over two or more things.
     Usage: -choose <one> <two> <three> <etc>
@@ -177,7 +216,6 @@ async def choose(self, ctx, *args):
     await bot.say(f'**`{choice}`**')
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def roll(ctx, number: int=100):
     '''Rolls a random number. If no number is put in, it will choose 100. It must be higher than one.
     Usage: -roll <number>
@@ -189,7 +227,6 @@ async def roll(ctx, number: int=100):
         await bot.say(f"{ctx.message.author.mention} Please insert a number higher than one.")
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def roast(ctx, person: discord.Member):
     '''Roast someone.
     Usage: -roast <@person>
@@ -200,7 +237,6 @@ async def roast(ctx, person: discord.Member):
     await bot.say(roast_current_response.format(person.mention))
 
 @bot.command(pass_context=True, aliases=['meme'])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def memes(ctx):
     '''Randomizes between lots of memes
     Usage: -memes
@@ -210,7 +246,6 @@ async def memes(ctx):
     await bot.say(memes_current_response.format(ctx.message.author.mention))
 #info
 @bot.command(pass_context=True, aliases=['botinfo','information','botinformation','binfo','boti','binformation'])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def info(ctx):
     '''Tells you information about the bot.
     Usage: -info
@@ -233,8 +268,8 @@ async def info(ctx):
     await bot.say(embed=embed)
 
 #actions
-@bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+@bot.group(Pass_context=True)
+
 async def actions(ctx):
     '''Shows the action commands.
     Usage: -action
@@ -244,7 +279,7 @@ async def actions(ctx):
         await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def punch(ctx, person: discord.Member): 
     '''Punch someone.
     Usage: -punch <@person>
@@ -254,7 +289,7 @@ async def punch(ctx, person: discord.Member):
     punch_current_response = random.choice(punch_possible_responses)
     await bot.say(punch_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def legkick(ctx, person: discord.Member):
     '''Kick someone.
     Usage: -legkick <@person>
@@ -264,7 +299,7 @@ async def legkick(ctx, person: discord.Member):
     kick_current_response = random.choice(kick_possible_responses)
     await bot.say(kick_current_response.format(ctx.message.author.mention, person.mention))	
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def hug(ctx, person: discord.Member):
     '''Hug someone.
     Usage: -hug <@person>
@@ -274,7 +309,7 @@ async def hug(ctx, person: discord.Member):
     hug_current_response = random.choice(hug_possible_responses)
     await bot.say(hug_current_response.format(ctx.message.author.mention, person.mention))	
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kiss(ctx, person: discord.Member):
     '''Kiss someone.
     Usage: -kiss <@person>
@@ -284,7 +319,7 @@ async def kiss(ctx, person: discord.Member):
     kiss_current_response = random.choice(kiss_possible_responses)
     await bot.say(kiss_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def uppercut(ctx, person: discord.Member):
     '''Uppercut someone.
     Usage: -uppercut <@person>
@@ -294,7 +329,7 @@ async def uppercut(ctx, person: discord.Member):
     uppercut_current_response = random.choice(uppercut_possible_responses)
     await bot.say(uppercut_current_response.format(ctx.message.author.mention, person.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def wave(ctx, person: discord.Member):
     '''Wave at someone.
     Usage: -wave <@person>
@@ -304,7 +339,7 @@ async def wave(ctx, person: discord.Member):
     uppercut_current_response = random.choice(uppercut_possible_responses)
     await bot.say(uppercut_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def smile(ctx):
     '''Just smile.
     Usage: -smile
@@ -313,7 +348,7 @@ async def smile(ctx):
     smile_current_response = random.choice(smile_possible_responses)
     await bot.say(smile_current_response.format(ctx.message.author.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def frown(ctx):
     '''Just frown.
     Usage: -frown
@@ -322,7 +357,7 @@ async def frown(ctx):
     punch_current_response = random.choice(punch_possible_responses)
     await bot.say(punch_current_response.format(ctx.message.author.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def slap(ctx, person: discord.Member):
     '''Slap someone.
     Usage: -slap <@person>
@@ -332,7 +367,7 @@ async def slap(ctx, person: discord.Member):
     slap_current_response = random.choice(slap_possible_responses)
     await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def stab(ctx, person: discord.Member):
     '''Stab someone.
     Usage: -stab <@person>
@@ -342,7 +377,7 @@ async def stab(ctx, person: discord.Member):
     slap_current_response = random.choice(slap_possible_responses)
     await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def murder(ctx, person: discord.Member):
     '''Murder someone.
     Usage: -murder <@person>
@@ -352,7 +387,7 @@ async def murder(ctx, person: discord.Member):
     slap_current_response = random.choice(slap_possible_responses)
     await bot.say(slap_current_response.format(ctx.message.author.mention, person.mention))
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def shoot(ctx, person: discord.Member):
     '''Shoot someone.
     Usage: -shoot <@person>
@@ -364,14 +399,14 @@ async def shoot(ctx, person: discord.Member):
 
 #jokes
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def jokes(ctx):
 	if ctx.invoked_subcommand is None:
 		embed=discord.Embed(description='Joke commands\n\n\n-insovietrussia\nThis command randomizes between lots of "In Soviet Russia" jokes.\n\n-chucknorris\nRandomizes between lots of Chuck Norris jokes/facts.\n\n-dadjoke\nRandomizes between lots of really not funny bad Dad jokes!',color=0x2874A6)
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def insovietrussia(ctx):
     '''Randomizes between lots of insovietrussia jokes.
     Usage: -insovietrussia
@@ -380,7 +415,7 @@ async def insovietrussia(ctx):
     insovietrussia_current_response = random.choice(insovietrussia_possible_responses)
     await bot.say(insovietrussia_current_response)
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def chucknorris(ctx):
     '''Randomizes between lots of Chuck Norris jokes.
     Usage: -chucknorris
@@ -389,7 +424,7 @@ async def chucknorris(ctx):
     chucknorris_current_response = random.choice(chucknorris_possible_responses)
     await bot.say(chucknorris_current_response)
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def dadjoke(ctx):
     '''Randomizes between lots of terrible Dad jokes.
     Usage: -dadjoke
@@ -400,7 +435,7 @@ async def dadjoke(ctx):
 
 #moderation
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def moderation(ctx):
     '''Shows a list of moderation commands.
     Usage: -moderation
@@ -410,87 +445,105 @@ async def moderation(ctx):
 	    await bot.say(embed=embed)
 
 @bot.command(pass_context = True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kick(ctx, *, member : discord.Member = None):
     '''Kick someone
     Usage: -kick <@person>
     Example: -kick @Pointless
+    Permission: kick_members
     '''
     if not ctx.message.author.server_permissions.kick_members:
         embed=discord.Embed(description=':x: You don\'t have enough permissions for this: kick_members.', color=0xFF0000)
+        await bot.delete_message(ctx.message)
         await bot.say(embed=embed)
         return
  
     if not member:
+        await bot.delete_message(ctx.message)
         return await bot.say(ctx.message.author.mention + ", specify a user to kick!")
     try:
         await bot.kick(member)
+        await bot.delete_message(ctx.message)
     except Exception as e:
         if 'Privilege is too low' in str(e):
             embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
+            await bot.delete_message(ctx.message)
             return await bot.say(embed = embed)
  
     embed = discord.Embed(description =f"**%s** has been kicked!"%member.name, color = 0xFF0000)
+    await bot.delete_message(ctx.message)
     return await bot.say(embed = embed)
 
 @bot.command(pass_context = True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def ban(ctx, *, member : discord.Member = None, reason:str=None):
 	'''Ban someone.
 	Usage: -ban <@person>
 	Example: -ban @Pointless
+    Permission: ban_members
 	'''
 	if not ctx.message.author.server_permissions.ban_members:
 		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
 		await bot.say(embed=embed)
+		await bot.delete_message(ctx.message)
 		return
  
 	if not member:
+		await bot.delete_message(ctx.message)
 		return await bot.say(ctx.message.author.mention + ", specify a user to ban!")
 	try:
 		await bot.ban(member)
+		await bot.delete_message(ctx.message)
 	except Exception as e:
 		if 'Privilege is too low' in str(e):
 			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
+			await bot.delete_message(ctx.message)
 			return await bot.say(embed = embed)
  
 	embed = discord.Embed(description = "**%s** has been banned!"%member.name, color = 0xFF0000)
+	await bot.delete_message(ctx.message)
 	return await bot.say(embed = embed)
 
 @bot.command(pass_context = True, aliases=['uban'])
-@commands.cooldown(1, 3, commands.BucketType.user)
 async def unban(ctx, *, member : discord.Member = None):
 	'''Unban someone.
 	Usage: -unban <@person>
 	Example: -unban @Pointless
+    Permission: ban_members
 	'''
 	if not ctx.message.author.server_permissions.ban_members:
 		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
 		await bot.say(embed=embed)
+		await bot.delete_message(ctx.message)
 		return
  
 	if not member:
 		return await bot.say(ctx.message.author.mention + ", specify a user to unban!")
+		await bot.delete_message(ctx.message)
 	try:
 		await bot.unban(member)
+		await bot.delete_message(ctx.message)
 	except Exception as e:
 		if 'Privilege is too low' in str(e):
 			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
+			await bot.delete_message(ctx.message)
 			return await bot.say(embed = embed)
  
 	embed = discord.Embed(description = "**%s** has been unbanned!"%member.name, color = 0xFF0000)
+	await bot.delete_message(ctx.message)
 	return await bot.say(embed = embed)
 
 @bot.command(pass_context=True, aliases=['purge','prune'])  
-@commands.cooldown(1, 3, commands.BucketType.user)    
 async def clear(ctx, amount:int):
     '''Clear messages of over 2 or more.
     Usage: -clear <number>
     Example: -clear 15
+    Permission: manage_messages
     '''
     if not ctx.message.author.server_permissions.manage_messages:
         embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
         await bot.say(embed=embed)
+        await bot.delete_message(ctx.message)
         return
     deleted = await bot.purge_from(ctx.message.channel, limit=amount)
     await asyncio.sleep(0.1)
@@ -502,69 +555,131 @@ async def clear(ctx, amount:int):
         pass
 
 @bot.command(pass_context=True, no_pm=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def mute(ctx, *, member : discord.Member, reason:str=None):
     '''Mute someone.
     Usage: -mute <@person>
     Example: -mute @Pointless
+    Permission: manage_messages
     '''
     if not ctx.message.author.server_permissions.manage_messages:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-        await bot.say(embed=embed)
-        return
-    overwrite = discord.PermissionOverwrite()
-    overwrite.send_messages = False
-    await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+        embed1 = discord.Embed(description = f"**{ctx.message.author}, I added the role %s to %s.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        await bot.delete_message(ctx.message)
+        return await bot.say(embed = embed1)
+    else:  
+        overwrite = discord.PermissionOverwrite()
+        overwrite.send_messages = False
+        await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+        await bot.delete_message(ctx.message)
 
     embed = discord.Embed(description = "**%s** has been muted!"%member.name, color = 0xFF0000)
+    await bot.delete_message(ctx.message)
     return await bot.say(embed = embed)
 
 @bot.command(pass_context=True, no_pm=True, aliases=['umute'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def unmute(ctx, *, member : discord.Member):
     '''Unmute someone.
     Usage: -unmute <@person>
     Example: -unmute @Pointless
+    Permission: manage_messages
     '''
     if not ctx.message.author.server_permissions.manage_messages:
-        embed=discord.Embed(description=':x: You don\'t have enough permissions for this: manage_messages.', color=0xFF0000)
-        await bot.say(embed=embed)
-        return
-    overwrite = discord.PermissionOverwrite()
-    overwrite.send_messages = True
-    await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+        embed1 = discord.Embed(description = f"**{ctx.message.author}, You do not have the manage_messages permission.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        await bot.delete_message(ctx.message)
+        return await bot.say(embed = embed1)
+    else:
+        overwrite = discord.PermissionOverwrite()
+        overwrite.send_messages = True
+        await bot.edit_channel_permissions(ctx.message.channel, member, overwrite)
+        await bot.delete_message(ctx.message)
 
     embed = discord.Embed(description = "**%s** has been unmuted!"%member.mention, color = 0xFF0000)
+    await bot.delete_message(ctx.message)
     return await bot.say(embed = embed)
 @bot.command(pass_context = True, aliases=['sban'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def softban(ctx, *, member : discord.Member = None):
-	'''Softban someone.
-	Usage: -softban <@person>
-	Example: -softban @Pointless
-	'''
-	if not ctx.message.author.server_permissions.ban_members:
-		embed=discord.Embed(description=':x: You don\'t have enough permissions for this: ban_members.', color=0xFF0000)
-		await bot.say(embed=embed)
-		return
+    '''Softban someone.
+    Usage: -softban <@person>
+    Example: -softban @Pointless
+    Permission: ban_members
+    '''
+    if not ctx.message.author.server_permissions.ban_members:
+        embed1 = discord.Embed(description = f"**{ctx.message.author}, You do not have the ban_members permission.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        await bot.delete_message(ctx.message)
+        return await bot.say(embed = embed1)
  
-	if not member:
-		return await bot.say(ctx.message.author.mention + ", specify a user to ban!")
-	try:
-		await bot.ban(member)
-		await bot.unban(member.server,member)
-	except Exception as e:
-		if 'Privilege is too low' in str(e):
-			embed = discord.Embed(description = ":x: The person you are trying to ban has high permissions.", color = 0xFF0000)
-			return await bot.say(embed = embed)
+    if not member:
+        embed2 = discord.Embed(description = f"**{ctx.message.author}, Specify a user to ban next time you use this command.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        await bot.delete_message(ctx.message)
+        return await bot.say(embed = embed2)
+    try:
+        await bot.ban(member)
+        await bot.unban(member.server,member)
+        await bot.delete_message(ctx.message)
+    except Exception as e:
+        if 'Privilege is too low' in str(e):
+            embed3 = discord.Embed(description = f"**{ctx.message.author}, The person you are trying to soft-ban has high permissions.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+            await bot.delete_message(ctx.message)
+            return await bot.say(embed = embed3)
  
-	embed = discord.Embed(description = "**%s** has been soft-banned!"%member.name, color = 0xFF0000)
-	return await bot.say(embed = embed)
+    embed3 = discord.Embed(description = "**%s** has been soft-banned!"%member.name, color = 0xFF0000)
+    await bot.delete_message(ctx.message)
+    return await bot.say(embed = embed3)
+    
 		
+@bot.command(pass_context=True, no_pm=True)
+async def removerole(ctx, user: discord.Member, *, role):
+    '''Remove a role from someone.
+    Usage: -removerole <@person> <role>
+    Example: -removerole @Pointless Memer
+    Permission: manage_roles
+    '''
+    if ctx.message.author.server_permissions.manage_roles:
+        await bot.remove_roles(user, discord.utils.get(ctx.message.server.roles, name=role))
+        embed1 = discord.Embed(description = f"**{ctx.message.author},**I removed the role {role} from {user.mention}.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        return await bot.say(embed = embed1)
+        await bot.delete_message(ctx.message)
+    else:
+        embed2 = discord.Embed(description = f"**{ctx.message.author}, You do not have the manage_roles permission.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        return await bot.say(embed = embed2)
+
+@bot.command(pass_context=True, no_pm=True)
+async def addrole(ctx, user: discord.Member, *, role):
+    '''Add a role to someone.
+    Usage: -addrole <@person> <role>
+    Example: -addrole @Pointless Memer
+    Permission: manage_roles
+    '''
+    if ctx.message.author.server_permissions.manage_roles:
+        await bot.add_roles(user, discord.utils.get(ctx.message.server.roles, name=role))
+        embed1 = discord.Embed(description = f"**{ctx.message.author}, I added the role {role} to {user.mention}.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        return await bot.say(embed = embed1)
+        await bot.delete_message(ctx.message)
+    else:
+        embed2 = discord.Embed(description = f"**{ctx.message.author}, You do not have the manage_roles permission.**", color = 0xFF0000, set_footer = f'Command executed by: {ctx.message.author}')
+        return await bot.say(embed = embed2)
+        await bot.delete_message(ctx.message)
+@bot.command(pass_context = True, no_pm = True)
+async def announce(ctx, *, text: str):
+    '''Announce something.
+    Usage: -announce <text>
+    Example: -announce I like potatoes!
+    Permission: Administrator
+    '''
+    if not ctx.message.author.server_permissions.administrator:
+        embed1 = discord.Embed(description = f"**{ctx.message.author}, You do not have the administrator permission.**", color = 0xFF0000, footer = f'Command executed by: {ctx.message.author}')
+        return await bot.say(embed = embed1)
+    else:
+        embed=discord.Embed(title = "__Announcement__", description=text, color = 0xFF0000, footer = f'Announcement by: {ctx.message.author}.')
+        await bot.delete_message(ctx.message)
+        await bot.say(embed = embed)
+
 
 #server
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def server(ctx):
 	'''Shows a list of server commands.
 	Usage: -server
@@ -575,7 +690,7 @@ async def server(ctx):
 		await bot.say(embed=embed)
 
 @bot.command(pass_context = True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def serverinfo(ctx):
     '''Shows information about the server.
     Usage: -serverinfo
@@ -584,7 +699,7 @@ async def serverinfo(ctx):
     roles = [x.name for x in server.role_hierarchy]
     role_length = len(roles)
 
-    if role_length > 50: #if theres too much roles lol
+    if role_length > 50: #if theres too much roles
         roles = roles[:50]
         roles.append('>>>> Displaying[50/%s] Roles'%len(roles))
 
@@ -611,7 +726,7 @@ async def serverinfo(ctx):
     return await bot.say(embed = join);
 
 @bot.command(pass_context = True, aliases=['banlist'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def bans(ctx):
     '''Shows a list of bans.
     Usage: -bans
@@ -620,12 +735,12 @@ async def bans(ctx):
     x = '\n'.join([y.name for y in x])
     xc = len(x)
     if xc == 0:
-        x = 'No one is banned.'	
+        x = 'No one is banned.'
     embed = discord.Embed(title = "List of banned people:", description = x, color = 0xFFFFF)
     return await bot.say(embed = embed)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def userinfo(ctx, user: discord.Member = None):
     '''Shows information about a user.
     Usage: -userinfo <@person>
@@ -650,7 +765,7 @@ async def userinfo(ctx, user: discord.Member = None):
 
 #utilities
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def utilities(ctx):
 	'''Shows a list of utility commands.
 	Usage: -utilities
@@ -660,7 +775,7 @@ async def utilities(ctx):
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, no_pm=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def avatar(ctx, member : discord.Member = None):
     '''Get the avatar of a member.
     Usage: -avatar <@person>
@@ -672,7 +787,7 @@ async def avatar(ctx, member : discord.Member = None):
     await bot.say(member.avatar_url)
 
 @bot.command(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def poll(ctx,*, message: str):
     '''Creates a poll.
     Usage: -poll <text>
@@ -689,7 +804,7 @@ async def poll(ctx,*, message: str):
     await bot.add_reaction(x, "👎")
 
 @bot.command(pass_context=True, aliases=['tr'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def translate(ctx, tl, *words: str):
     '''Translate something. Supported list of languages: https://tech.yandex.com/translate/doc/dg/concepts/api-overview-docpage/#languages
     Usage: translate <from>-<to>
@@ -700,17 +815,20 @@ async def translate(ctx, tl, *words: str):
     await bot.say("{0} {1}".format(ctx.message.author.mention, str(answer["text"])[2:-2]))
 
 @bot.command(pass_context=True, aliases=['urbandictionary','urbandict','udict','udictionary','udefine','urbandefine'])
-@commands.cooldown(1, 3, commands.BucketType.user)
-async def urban(ctx, *words: str):
-    '''Check something in urban dictionary
-    Usage: urbandict <word>
-    Example: urbandict Hello
-    '''
-    words = ''.join(words)
-    answer = requests.get("http://api.urbandictionary.com/v0/define?term={0}".format(words)).json()
-    if len(answer['list']) == 0:
-        await bot.say("No definition found.")
-    await bot.say("**{0}**: {1}".format(words, answer['list'][0]['definition']))
+
+async def urban(ctx,*msg):
+    word = ' '.join(msg)
+    api = "http://api.urbandictionary.com/v0/define"
+    response = requests.get(api, params=[("term", word)]).json()
+    
+    if len(response["list"]) == 0: return await client.say("Could not find that word!")
+    
+    embed = discord.Embed(title = ":mag: Search Word", description = word, color = 0xFFF00)
+    embed.add_field(name = "Top definition:", value = response['list'][0]['definition'])
+    embed.add_field(name = "Examples:", value = response['list'][0]["example"])
+    embed.set_footer(text = "Tags: " + ', '.join(response['tags']))
+
+    await bot.say(embed = embed)
 
 @bot.command(name='_-', pass_context=True)
 async def _correction(ctx):
@@ -720,7 +838,7 @@ async def _correction(ctx):
 
 
 @bot.group(pass_context=True, aliases=['maths','mathematics','mathematic','calculation'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def math(ctx):
 	'''Shows a list of math commands.
 	Usage: -math
@@ -730,7 +848,7 @@ async def math(ctx):
 		await bot.say(embed=embed)
 
 @bot.command(pass_context=True, aliases=['addition'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def add(ctx, number1: int, number2: int):
     '''Add two numbers together.
     Usage: -add <a> <b>
@@ -739,7 +857,7 @@ async def add(ctx, number1: int, number2: int):
     await bot.say(number1 + number2)
 
 @bot.command(pass_context=True, aliases=['subtraction','minus'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def subtract(ctx, number1: int, number2: int):
     '''Subtract two numbers.
     Usage: -subtract <a> <b>
@@ -748,7 +866,7 @@ async def subtract(ctx, number1: int, number2: int):
     await bot.say(number1 - number2)
 
 @bot.command(pass_context=True, aliases=['times','multiplication'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def multiply(ctx, number1: int, number2: int):
     '''Multiply two numbers together.
     Usage: -multiply <a> <b>
@@ -757,7 +875,7 @@ async def multiply(ctx, number1: int, number2: int):
     await bot.say(number1 * number2)
 
 @bot.command(pass_context=True, aliases=['division','share'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def divide(ctx, number1: int, number2: int):
     '''Divide two numbers.
     Usage: -divide <a> <b>
@@ -766,7 +884,7 @@ async def divide(ctx, number1: int, number2: int):
     await bot.say(number1 / number2)
 
 @bot.command(pass_context=True, aliases=['remainder','modulus'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def modulo(ctx, number1: int, number2: int):
     '''Find the remainder of when you divide two numbers together.
     Usage: -modulo <a> <b>
@@ -775,7 +893,7 @@ async def modulo(ctx, number1: int, number2: int):
     await bot.say(number1 % number2)
 
 @bot.command(pass_context=True, aliases=['power'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def exponent(ctx, number1: int, number2: int):
     '''Find the power of a number how many times you like.
     Usage: -exponent <a> <b>
@@ -784,7 +902,7 @@ async def exponent(ctx, number1: int, number2: int):
     await bot.say(number1 ** number2)
 
 @bot.group(pass_context=True, aliases=['convert'])
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def conversion(ctx):
 	'''Shows a list of commands that converts from one unit of whatever to another.
 	Usage: -conversion
@@ -794,7 +912,7 @@ async def conversion(ctx):
 		await bot.say(embed=embed)
     
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def temperature(ctx):
 	'''Shows a list of temperature conversion commands.
 	Usage: -temperature
@@ -804,7 +922,7 @@ async def temperature(ctx):
 		await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def centigrade(ctx):
 	'''Shows a list of centigrade conversion commands.
 	Usage: -centigrade
@@ -814,7 +932,7 @@ async def centigrade(ctx):
 		await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kelvin(ctx):
 	'''Shows a list of Kelvin conversion commands.
 	Usage: -kelvin
@@ -824,7 +942,7 @@ async def kelvin(ctx):
 		await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def fahrenheit(ctx):
 	'''Shows a list of Fahrenheit conversion commands.
 	Usage: -fahrenheit
@@ -834,7 +952,7 @@ async def fahrenheit(ctx):
 		await bot.say(embed=embed)
 
 @bot.group(pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def rankine(ctx):
 	'''Shows a list of Rankine conversion commands.
 	Usage: -rankine
@@ -844,7 +962,7 @@ async def rankine(ctx):
 		await bot.say(embed=embed)
 
 @bot.command(name='centigrade-fahrenheit',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def centigrade_fahrenheit(ctx, number: int):
     '''Convert Centigrade to Fahrenheit
     Usage: -centigrade-fahrenheit <number>
@@ -853,7 +971,7 @@ async def centigrade_fahrenheit(ctx, number: int):
     await bot.say(str((number * 1.8) + 32) + '°F')
 
 @bot.command(name='centigrade-kelvin',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def centigrade_kelvin(ctx, number: int):
     '''Convert Centigrade to Kelvin
     Usage: -centigrade-kelvin <number>
@@ -862,7 +980,7 @@ async def centigrade_kelvin(ctx, number: int):
     await bot.say(str(number + 273.15) + '°K')
 
 @bot.command(name='centigrade-rankine',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def centigrade_rankine(ctx, number: int):
     '''Convert Centigrade to Rankine
     Usage: -centigrade-rankine <number>
@@ -871,7 +989,7 @@ async def centigrade_rankine(ctx, number: int):
     await bot.say(str((number + 273.15) * (9/5)) + '°R')
 
 @bot.command(name='fahrenheit-centigrade',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def fahrenheit_centigrade(ctx, number: int):
     '''Convert Fahrenheit to Centigrade
     Usage: -fahrenheit-centigrade <number>
@@ -880,7 +998,7 @@ async def fahrenheit_centigrade(ctx, number: int):
     await bot.say(str((number - 32) / 1.8) + '°C')
 
 @bot.command(name='fahrenheit-kelvin',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def fahrenheit_kelvin(ctx, number: int):
     '''Convert Fahrenheit to Kelvin
     Usage: -fahrenheit-kelvin <number>
@@ -889,7 +1007,7 @@ async def fahrenheit_kelvin(ctx, number: int):
     await bot.say(str((number - 32) / 1.8) + '°K')
 
 @bot.command(name='fahrenheit-rankine',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def fahrenheit_rankine(ctx, number: int):
     '''Convert Fahrenheit to Rankine
     Usage: -fahrenheit-rankine <number>
@@ -898,7 +1016,7 @@ async def fahrenheit_rankine(ctx, number: int):
     await bot.say(str(number + 459.67) + '°R')
 
 @bot.command(name='kelvin-fahrenheit',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kelvin_fahrenheit(ctx, number: int):
     '''Convert Kelvin to Fahrenheit
     Usage: -kelvin-fahrenheit <number>
@@ -907,7 +1025,7 @@ async def kelvin_fahrenheit(ctx, number: int):
     await bot.say(str((number * (9/5)) - 459.67) + '°F')
 
 @bot.command(name='kelvin-centigrade',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kelvin_centigrade(ctx, number: int):
     '''Convert Kelvin to Centigrade
     Usage: -kelvin-Centigrade <number>
@@ -916,7 +1034,7 @@ async def kelvin_centigrade(ctx, number: int):
     await bot.say(str(number - 273.15 ) + '°C')
 
 @bot.command(name='kelvin-rankine',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def kelvin_rankine(ctx, number: int):
     '''Convert Kelvin to Rankine
     Usage: -kelvin-rankine <number>
@@ -925,7 +1043,7 @@ async def kelvin_rankine(ctx, number: int):
     await bot.say(str(number * (9/5)) + '°R')
 
 @bot.command(name='rankine-fahrenheit',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def rankine_fahrenheit(ctx, number: int):
     '''Convert Rankine to Fahrenheit
     Usage: -rankine-fahreneheit <number>
@@ -934,7 +1052,7 @@ async def rankine_fahrenheit(ctx, number: int):
     await bot.say(str(number - 459.67) + '°F')
 
 @bot.command(name='rankine-centigrade',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def rankine_centigrade(ctx, number: int):
     '''Convert Rankine to Centigrade
     Usage: -rankine-centigrade <number>
@@ -943,7 +1061,7 @@ async def rankine_centigrade(ctx, number: int):
     await bot.say(str((number - 491.67) * (5/9)) + '°C')
 
 @bot.command(name='rankine-kelvin',pass_context=True)
-@commands.cooldown(1, 3, commands.BucketType.user)
+
 async def rankine_kelvin(ctx, number: int):
     '''Convert Rankine to Kelvin
     Usage: -rankine-kelvin <number>
